@@ -1,6 +1,6 @@
 {
   "name": "gdpr-guard",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Simple GDPR manager",
   "main": "./dist/gdpr_guard.min.js",
   "types": "./dist/gdpr_guard.d.ts",
