@@ -13,8 +13,8 @@ class GdprGuardGroup implements GdprGuardCollection {
     constructor(public name: string, public description: string = "", public enabled: boolean = false){
     }
 
-    static for(name: string, description: string = ""): GdprGuardGroup{
-        return new GdprGuardGroup(name, description);
+    static for(name: string, description: string = "", enabled: boolean = false): GdprGuardGroup{
+        return new GdprGuardGroup(name, description, enabled);
     }
 
     addGuard(guard: GdprGuard): GdprGuardGroup{

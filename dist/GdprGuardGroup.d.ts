@@ -11,7 +11,7 @@ declare class GdprGuardGroup implements GdprGuardCollection {
     protected bindings: Map<string, GdprGuard>;
     readonly storage: GdprStorage;
     constructor(name: string, description?: string, enabled?: boolean);
-    static for(name: string, description?: string): GdprGuardGroup;
+    static for(name: string, description?: string, enabled?: boolean): GdprGuardGroup;
     addGuard(guard: GdprGuard): GdprGuardGroup;
     hasGuard(name: string): boolean;
     getGuard(name: string): GdprGuard | null;

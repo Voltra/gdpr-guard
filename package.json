@@ -19,6 +19,7 @@
 	"scripts": {
 		"dev": "webpack --mode development",
 		"build": "webpack --mode production",
+		"watch": "webpack --mode development --watch",
 		"clean": "rm -rf dist"
 	},
 	"license": "MIT",

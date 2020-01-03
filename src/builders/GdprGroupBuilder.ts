@@ -27,7 +27,7 @@ class GdprGroupBuilder extends GdprManagerBuilder{
     }
 
     public endGroup(): GdprManagerBuilder{
-        const group = GdprGuardGroup.for(this.name, this.description);
+        const group = GdprGuardGroup.for(this.name, this.description, this.enable);
         const guards = [...this.guards, ...this.groups];
         guards.forEach(guard => group.addGuard(guard));
         this.parent.groups.push(group);
