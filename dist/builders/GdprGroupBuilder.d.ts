@@ -21,7 +21,7 @@ declare class GdprGroupBuilder extends GdprManagerBuilder {
     enabled(): GdprGroupBuilder;
     disabled(): GdprGroupBuilder;
     required(): GdprGroupBuilder;
-    startGuard(storage: GdprStorage | null): GdprGuardBuilder;
+    startGuard(storage?: GdprStorage | null): GdprGuardBuilder;
     startRequiredGuard(storage: GdprStorage | null): GdprGuardBuilder;
     withEnabledGuard(name: string, description?: string, storage?: GdprStorage | null): GdprGroupBuilder;
     withDisabledGuard(name: string, description?: string, storage?: GdprStorage | null): GdprGroupBuilder;
