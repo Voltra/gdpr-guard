@@ -5,12 +5,14 @@ interface GdprGuard{
     enabled: boolean,
     readonly description: string,
     readonly storage: GdprStorage,
+    required: boolean,
 
     isEnabled(name: string): boolean,
 
     enable(): GdprGuard,
     disable(): GdprGuard,
     toggle(): GdprGuard,
+    makeRequired(): GdprGuard,
 
     enableForStorage(type: GdprStorage): GdprGuard,
     disableForStorage(type: GdprStorage): GdprGuard,
@@ -21,16 +23,18 @@ interface GdprGuard{
 interface GdprGuardRaw{
     name: string,
     enabled: boolean,
+    required: boolean,
     description: string,
     storage: GdprStorage,
 }
 
-function makeGuard(name: string, description: string, storage: GdprStorage = GdprStorage.Cookie, enabled: boolean = false): GdprGuard{
+function makeGuard(name: string, description: string, storage: GdprStorage = GdprStorage.Cookie, required: boolean = false, enabled: boolean|null = null): GdprGuard{
     return {
         name,
         description,
         storage,
-        enabled,
+        required,
+        enabled: enabled === null ? required : enabled,
         enable(){
             if(!this.enabled)
                 this.toggle();
@@ -44,7 +48,13 @@ function makeGuard(name: string, description: string, storage: GdprStorage = Gdp
             return this;
         },
         toggle(){
-            this.enabled = !this.enabled;
+            if(!this.required)
+                this.enabled = !this.enabled;
+            return this;
+        },
+        makeRequired(){
+            this.required = true;
+            this.enabled = true;
             return this;
         },
         isEnabled(name){
@@ -61,7 +71,7 @@ function makeGuard(name: string, description: string, storage: GdprStorage = Gdp
             return this;
         },
         toggleForStorage(type){
-            if(this.storage == type)
+            if(this.storage == type && !this.required)
                 this.toggle();
             return this;
         },
