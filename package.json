@@ -1,31 +1,34 @@
 {
-  "name": "gdpr-guard",
-  "version": "0.1.1",
-  "author": "Voltra <ludwig.guerin.98@gmx.fr>",
-  "homepage": "https://github.com/Voltra/gdpr-guard#readme",
-  "bugs": {
-      "url": "https://github.com/Voltra/gdpr-guard/issues"
-  },
-  "repository": {
-      "type": "git",
-      "url": "https://github.com/Voltra/gdpr-guard.git"
-  },
-  "description": "Simple GDPR manager",
-  "main": "./dist/gdpr_guard.js",
-  "types": "./dist/gdpr_guard.d.ts",
-  "scripts": {
-    "dev": "webpack --mode development",
-    "build": "webpack --mode production",
-    "clean": "rm -rf dist"
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "@types/node": "^13.1.2",
-    "@types/webpack": "^4.41.1",
-    "ts-loader": "^6.2.1",
-    "ts-node": "^8.5.4",
-    "typescript": "^3.7.4",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
-  }
+	"name": "gdpr-guard",
+	"version": "0.1.1",
+	"author": "Voltra <ludwig.guerin.98@gmx.fr>",
+	"homepage": "https://github.com/Voltra/gdpr-guard#readme",
+	"bugs": {
+		"url": "https://github.com/Voltra/gdpr-guard/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Voltra/gdpr-guard.git"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com/"
+	},
+	"description": "Simple GDPR manager",
+	"main": "./dist/gdpr_guard.js",
+	"types": "./dist/gdpr_guard.d.ts",
+	"scripts": {
+		"dev": "webpack --mode development",
+		"build": "webpack --mode production",
+		"clean": "rm -rf dist"
+	},
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^13.1.2",
+		"@types/webpack": "^4.41.1",
+		"ts-loader": "^6.2.1",
+		"ts-node": "^8.5.4",
+		"typescript": "^3.7.4",
+		"webpack": "^4.41.5",
+		"webpack-cli": "^3.3.10"
+	}
 }
