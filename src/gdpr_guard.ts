@@ -21,14 +21,10 @@ const $gdpr: GdprManager = GdprManagerBuilder.make()
 
 */
 
-const { REQUIRED_GROUP, REQUIRED_GROUP_DESC } = GdprManager;
-
 export {
     makeGuard,
     GdprGuardGroup,
     GdprManager,
     GdprStorage,
     GdprManagerBuilder,
-    REQUIRED_GROUP,
-    REQUIRED_GROUP_DESC,
 }

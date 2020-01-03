@@ -7,13 +7,12 @@ interface GdprManagerRaw {
     groups: GdprGuardGroupRaw[];
 }
 declare class GdprManager implements GdprGuardCollection {
-    static readonly REQUIRED_GROUP: string;
-    static readonly REQUIRED_GROUP_DESC: string;
     protected groups: Map<string, GdprGuardGroup>;
     readonly name: string;
     readonly description: string;
     enabled: boolean;
     readonly storage: GdprStorage;
+    required: boolean;
     protected constructor();
     static create(groups?: GdprGuardGroup[]): GdprManager;
     createGroup(name: string, description?: string): GdprManager;
@@ -28,6 +27,7 @@ declare class GdprManager implements GdprGuardCollection {
     enable(): GdprManager;
     disable(): GdprManager;
     toggle(): GdprManager;
+    makeRequired(): GdprManager;
     enableForStorage(type: GdprStorage): GdprManager;
     disableForStorage(type: GdprStorage): GdprManager;
     toggleForStorage(type: GdprStorage): GdprManager;

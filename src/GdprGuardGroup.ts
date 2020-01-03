@@ -10,11 +10,13 @@ class GdprGuardGroup implements GdprGuardCollection {
     protected bindings: Map<string, GdprGuard> = new Map();
     public readonly storage: GdprStorage = GdprStorage.None;
 
-    constructor(public name: string, public description: string = "", public enabled: boolean = false){
+    constructor(public name: string, public description: string = "", public enabled: boolean = false, public required: boolean = false){
+        if(this.required)
+            this.enabled = true;
     }
 
-    static for(name: string, description: string = "", enabled: boolean = false): GdprGuardGroup{
-        return new GdprGuardGroup(name, description, enabled);
+    static for(name: string, description: string = "", enabled: boolean = false, required: boolean = false): GdprGuardGroup{
+        return new GdprGuardGroup(name, description, enabled, required);
     }
 
     addGuard(guard: GdprGuard): GdprGuardGroup{
@@ -63,6 +65,12 @@ class GdprGuardGroup implements GdprGuardCollection {
         return this.enabled ? this.disable() : this.enable();
     }
 
+    makeRequired(): GdprGuardGroup{
+        this.required = true;
+        this.enabled = true;
+        return this.doForEachGuard(guard => guard.makeRequired());
+    }
+
     enableForStorage(type: GdprStorage): GdprGuardGroup{
         return this.doForEachGuard(guard => {
             if(guard.storage & type)
@@ -89,6 +97,7 @@ class GdprGuardGroup implements GdprGuardCollection {
             name: this.name,
             description: this.description,
             enabled: this.enabled,
+            required: this.required,
             storage: this.storage,
             guards: [],
         };

@@ -10,15 +10,23 @@ class GdprGuardBuilder{
         protected parent: GdprGroupBuilder,
         protected storage: GdprStorage,
         protected enable: boolean,
+        protected require: boolean,
     ){
+        if(require)
+            this.enable = true;
     }
 
-    static create(gb: GdprGroupBuilder, storage: GdprStorage = GdprStorage.Cookie, enabled: boolean = false){
-        return new GdprGuardBuilder(gb, storage, enabled);
+    static create(gb: GdprGroupBuilder, storage: GdprStorage = GdprStorage.Cookie, enabled: boolean = false, required: boolean = false){
+        return new GdprGuardBuilder(gb, storage, enabled, required);
     }
 
     endGuard(): GdprGroupBuilder{
-        const guard = makeGuard(this.name, this.description, this.storage, this.enable);
+        const enable = this.require || this.enable;
+        const guard = makeGuard(this.name, this.description, this.storage, this.require, enable);
+
+        if(this.require)
+            guard.makeRequired();
+
         this.parent.guards.push(guard);
         return this.parent;
     }
@@ -46,6 +54,10 @@ class GdprGuardBuilder{
 
     storedIn(storage: GdprStorage){
         return this.edit(b => b.storage = storage);
+    }
+
+    required(): GdprGuardBuilder{
+        return this.edit(b => b.require = true);
     }
 }
 

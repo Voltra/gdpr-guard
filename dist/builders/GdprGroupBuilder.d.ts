@@ -7,10 +7,12 @@ declare class GdprGroupBuilder extends GdprManagerBuilder {
     protected name: string;
     protected description: string;
     protected enable: boolean;
+    protected require: boolean;
     guards: GdprGuard[];
-    protected constructor(parent: GdprManagerBuilder, name: string, description: string, storage: GdprStorage, enable: boolean);
+    protected constructor(parent: GdprManagerBuilder, name: string, description: string, storage: GdprStorage, enable: boolean, require: boolean);
     startGroup(storage?: GdprStorage | null, name?: string, description?: string): GdprGroupBuilder;
-    static create(mb: GdprManagerBuilder, name: string, description?: string, storage?: GdprStorage | null, enabled?: boolean): GdprGroupBuilder;
+    startRequiredGroup(storage?: GdprStorage | null, name?: string, description?: string): GdprGroupBuilder;
+    static create(mb: GdprManagerBuilder, name: string, description?: string, storage?: GdprStorage | null, enabled?: boolean, required?: boolean): GdprGroupBuilder;
     endGroup(): GdprManagerBuilder;
     protected edit(cb: (builder: GdprGroupBuilder) => any): GdprGroupBuilder;
     withName(name: string): GdprGroupBuilder;
@@ -18,7 +20,9 @@ declare class GdprGroupBuilder extends GdprManagerBuilder {
     storedIn(storage: GdprStorage): GdprGroupBuilder;
     enabled(): GdprGroupBuilder;
     disabled(): GdprGroupBuilder;
+    required(): GdprGroupBuilder;
     startGuard(storage: GdprStorage | null): GdprGuardBuilder;
+    startRequiredGuard(storage: GdprStorage | null): GdprGuardBuilder;
     withEnabledGuard(name: string, description?: string, storage?: GdprStorage | null): GdprGroupBuilder;
     withDisabledGuard(name: string, description?: string, storage?: GdprStorage | null): GdprGroupBuilder;
 }

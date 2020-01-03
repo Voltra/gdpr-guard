@@ -15,6 +15,10 @@ class GdprManagerBuilder{
         return GdprGroupBuilder.create(this, name, description, storage, enabled);
     }
 
+    startRequiredGroup(storage: GdprStorage|null = null, name: string = "", description: string = ""){
+        return this.startGroup(storage, name, description, true).enabled();
+    }
+
     startEnabledGroup(storage: GdprStorage|null = null, name: string = "", description: string = ""): GdprGroupBuilder{
         return this.startGroup(storage, name, description, true);
     }

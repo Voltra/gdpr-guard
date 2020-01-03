@@ -10,15 +10,12 @@ interface GdprManagerRaw{
 
 
 class GdprManager implements GdprGuardCollection{
-    public static readonly REQUIRED_GROUP: string = "REQUIRED";
-    public static readonly REQUIRED_GROUP_DESC: string = "Features that cannot be disabled";
-
-
     protected groups: Map<string, GdprGuardGroup> = new Map();
     readonly name: string = "manager";
     readonly description: string = "Manager of GDPR guard groups";
     enabled: boolean = true;
     readonly storage: GdprStorage = GdprStorage.None;
+    required: boolean = false;
 
     protected constructor(){
     }
@@ -85,14 +82,16 @@ class GdprManager implements GdprGuardCollection{
     }
 
     disable(): GdprManager {
-        return this.forEachGroup(group => {
-            if(group.name !== GdprManager.REQUIRED_GROUP)
-                group.disable();
-        });
+        return this.forEachGroup(group => group.disable());
     }
 
     toggle(): GdprManager {
         return this.enabled ? this.disable() : this.enable();
+    }
+
+    makeRequired(): GdprManager{
+        // noop
+        return this;
     }
 
     enableForStorage(type: GdprStorage): GdprManager {
@@ -100,17 +99,11 @@ class GdprManager implements GdprGuardCollection{
     }
 
     disableForStorage(type: GdprStorage): GdprManager {
-        return this.forEachGroup(group => {
-            if(group.name !== GdprManager.REQUIRED_GROUP)
-                group.disableForStorage(type);
-        });
+        return this.forEachGroup(group => group.disableForStorage(type));
     }
 
     toggleForStorage(type: GdprStorage): GdprManager {
-        return this.forEachGroup(group => {
-            if(group.name !== GdprManager.REQUIRED_GROUP)
-                group.toggleForStorage(type);
-        });
+        return this.forEachGroup(group => group.toggleForStorage(type));
     }
 
     raw(): GdprManagerRaw{
