@@ -78,10 +78,12 @@ class GdprManager implements GdprGuardCollection{
     }
 
     enable(): GdprManager {
+        this.enabled = true;
         return this.forEachGroup(group => group.enable());
     }
 
     disable(): GdprManager {
+        this.enabled = false;
         return this.forEachGroup(group => group.disable());
     }
 

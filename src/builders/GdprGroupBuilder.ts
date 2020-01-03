@@ -75,7 +75,7 @@ class GdprGroupBuilder extends GdprManagerBuilder{
         return this.edit(b => b.require = true);
     }
 
-    public startGuard(storage: GdprStorage|null): GdprGuardBuilder{
+    public startGuard(storage: GdprStorage|null = null): GdprGuardBuilder{
         return GdprGuardBuilder.create(this, storage || this.storage, this.enable);
     }
 
