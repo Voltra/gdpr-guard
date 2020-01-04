@@ -22,6 +22,15 @@ class GdprGuardGroup implements GdprGuardCollection {
     protected bindings: Map<string, GdprGuard> = new Map();
     public readonly storage: GdprStorage = GdprStorage.None;
 
+    /**
+     * Creates an instance of GdprGuardGroup.
+     * @ignore
+     * @param {string} name
+     * @param {string} [description=""]
+     * @param {boolean} [enabled=false]
+     * @param {boolean} [required=false]
+     * @memberof GdprGuardGroup
+     */
     constructor(public name: string, public description: string = "", public enabled: boolean = false, public required: boolean = false){
         if(this.required)
             this.enabled = true;
