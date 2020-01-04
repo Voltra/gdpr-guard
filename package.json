@@ -21,7 +21,7 @@
 		"build": "webpack --mode production",
 		"watch": "webpack --mode development --watch",
 		"clean": "rm -rf dist",
-        "docs": "typedoc --out docs src"
+        "docs": "typedoc --options typedoc.config.js --out docs src"
 	},
 	"license": "MIT",
 	"devDependencies": {
