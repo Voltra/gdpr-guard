@@ -1,5 +1,5 @@
 module.exports = {
-    mode: "modules",
+    mode: "file",
     readme: "README.md",
     exclude: [
         "node_modules/"
