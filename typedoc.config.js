@@ -4,6 +4,6 @@ module.exports = {
     exclude: [
         "node_modules/"
     ],
-    theme: "minimal",
+    theme: "node_modules/eledoc/bin/default/",
     hideGenerator: true
 };

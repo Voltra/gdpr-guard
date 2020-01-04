@@ -21,15 +21,17 @@
 		"build": "webpack --mode production",
 		"watch": "webpack --mode development --watch",
 		"clean": "rm -rf dist",
-        "docs": "typedoc --options typedoc.config.js --out docs src"
+		"docs": "([[ -d ./docs ]] && rm -rf ./docs); typedoc --options typedoc.config.js --out docs src"
 	},
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^13.1.2",
 		"@types/webpack": "^4.41.1",
+		"eledoc": "^0.2.1",
 		"ts-loader": "^6.2.1",
 		"ts-node": "^8.5.4",
 		"typedoc": "^0.15.6",
+		"typedoc-twilio-theme": "^1.0.0",
 		"typescript": "^3.7.4",
 		"webpack": "^4.41.5",
 		"webpack-cli": "^3.3.10"
