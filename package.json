@@ -1,6 +1,6 @@
 {
 	"name": "gdpr-guard",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"author": "Voltra <ludwig.guerin.98@gmx.fr>",
 	"homepage": "https://github.com/Voltra/gdpr-guard#readme",
 	"bugs": {
@@ -9,9 +9,6 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Voltra/gdpr-guard.git"
-	},
-	"publishConfig": {
-		"registry": "https://npm.pkg.github.com/"
 	},
 	"description": "Simple GDPR manager",
 	"main": "./dist/gdpr_guard.js",
