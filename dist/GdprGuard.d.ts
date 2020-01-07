@@ -13,7 +13,7 @@ interface GdprGuard {
     enableForStorage(type: GdprStorage): GdprGuard;
     disableForStorage(type: GdprStorage): GdprGuard;
     toggleForStorage(type: GdprStorage): GdprGuard;
-    raw(): object;
+    raw(): object | GdprGuardRaw;
 }
 interface GdprGuardRaw {
     name: string;
