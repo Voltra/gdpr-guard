@@ -1,5 +1,6 @@
 # gdpr-guard
 > Simple GDPR manager
+
 This library helps you build a GPDR compliant system by providing you easy to manipulate interfaces.
 
 ## How to import
@@ -43,7 +44,7 @@ The wide concept of `guard` is that a `guard` is an entity that can be toggled t
 
 ## What is provided?
 
-The complete JSDoc will be coming soon
+You can check the [documentations here](https://voltra.github.io/gdpr-guard/)
 
 ### GdprStorage
 This is an enum-like type that lists the available storage options, these include:
