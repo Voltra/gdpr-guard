@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>gdpr-guard - v1.0.3</title>
+	<title>gdpr-guard - v1.1.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">gdpr-guard - v1.0.3</a>
+					<a href="index.html" class="title">gdpr-guard - v1.1.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -70,6 +70,9 @@
 							<a href="enums/gdprstorage.html" class="tsd-kind-icon">Gdpr<wbr>Storage</a>
 						</li>
 						<li class=" tsd-kind-class tsd-is-not-exported">
+							<a href="classes/gdprdeserializer.html" class="tsd-kind-icon">Gdpr<wbr>Deserializer</a>
+						</li>
+						<li class=" tsd-kind-class tsd-is-not-exported">
 							<a href="classes/gdprgroupbuilder.html" class="tsd-kind-icon">Gdpr<wbr>Group<wbr>Builder</a>
 						</li>
 						<li class=" tsd-kind-class tsd-is-not-exported">
@@ -83,6 +86,9 @@
 						</li>
 						<li class=" tsd-kind-class tsd-is-not-exported">
 							<a href="classes/gdprmanagerbuilder.html" class="tsd-kind-icon">Gdpr<wbr>Manager<wbr>Builder</a>
+						</li>
+						<li class=" tsd-kind-class tsd-is-not-exported">
+							<a href="classes/gdprserializer.html" class="tsd-kind-icon">Gdpr<wbr>Serializer</a>
 						</li>
 						<li class=" tsd-kind-interface tsd-is-not-exported">
 							<a href="interfaces/gdprguard.html" class="tsd-kind-icon">Gdpr<wbr>Guard</a>
@@ -101,6 +107,9 @@
 						</li>
 						<li class=" tsd-kind-function tsd-is-not-exported">
 							<a href="globals.html#makeguard" class="tsd-kind-icon">make<wbr>Guard</a>
+						</li>
+						<li class=" tsd-kind-function tsd-is-not-exported">
+							<a href="globals.html#storagefromordinal" class="tsd-kind-icon">storage<wbr>From<wbr>Ordinal</a>
 						</li>
 					</ul>
 				</ul>
@@ -126,27 +135,51 @@
 				</a>
 				<p>Using ES6-style imports:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> {
+    <span class="hljs-comment">//most useful</span>
+    GdprStorage,
+    GdprManagerBuilder,
+    GdprDeserializer,
+
+    <span class="hljs-comment">//helpers</span>
     makeGuard,
     GdprGuardGroup,
     GdprManager,
-    GdprStorage,
-    GdprManagerBuilder,
+    GdprSerializer,
+
+    <span class="hljs-comment">//for completion</span>
+    storageFromOrdinal,
 } <span class="hljs-keyword">from</span> <span class="hljs-string">"gdpr-guard"</span></code></pre>
 				<p>Using node style require:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> {
+    <span class="hljs-comment">//most useful</span>
+    GdprStorage,
+    GdprManagerBuilder,
+    GdprDeserializer,
+
+    <span class="hljs-comment">//helpers</span>
     makeGuard,
     GdprGuardGroup,
     GdprManager,
-    GdprStorage,
-    GdprManagerBuilder,
+    GdprSerializer,
+
+    <span class="hljs-comment">//for completion</span>
+    storageFromOrdinal,
 } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"gdpr-guard"</span>);</code></pre>
 				<p>Directly from your browser:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> {
+    <span class="hljs-comment">//most useful</span>
+    GdprStorage,
+    GdprManagerBuilder,
+    GdprDeserializer,
+
+    <span class="hljs-comment">//helpers</span>
     makeGuard,
     GdprGuardGroup,
     GdprManager,
-    GdprStorage,
-    GdprManagerBuilder,
+    GdprSerializer,
+
+    <span class="hljs-comment">//for completion</span>
+    storageFromOrdinal,
 } = gdprGuard;</code></pre>
 				<a href="#what-are-the-essential-design-choices-to-keep-in-mind" id="what-are-the-essential-design-choices-to-keep-in-mind" style="color: inherit; text-decoration: none;">
 					<h2>What are the essential design choices to keep in mind</h2>
@@ -196,6 +229,29 @@
 .build();
 
 <span class="hljs-built_in">console</span>.log(manager.raw()); <span class="hljs-comment">// inspect useful information</span></code></pre>
+				<a href="#gdprdeserializer" id="gdprdeserializer" style="color: inherit; text-decoration: none;">
+					<h3>GdprDeserializer</h3>
+				</a>
+				<p><code>GdprDeserializer</code> allows you to retrieve a gdpr object from its <code>raw</code> representation.</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { GdprManagerBuilder, GdprDeserializer } <span class="hljs-keyword">from</span> <span class="hljs-string">"gdpr-guard"</span>
+
+<span class="hljs-comment">// [...]</span>
+
+<span class="hljs-keyword">const</span> manager = GdprManagerBuilder.make()
+    <span class="hljs-comment">// [...]</span>
+.build();
+
+<span class="hljs-keyword">const</span> raw = manager.raw();
+<span class="hljs-comment">//store in local storage</span>
+
+<span class="hljs-keyword">const</span> raw = <span class="hljs-comment">//get from local storage</span>
+<span class="hljs-keyword">const</span> manager = GdprDeserializer.manager(raw);
+<span class="hljs-keyword">if</span>(manager === <span class="hljs-literal">null</span>){ <span class="hljs-comment">//failed deserialization</span>
+    <span class="hljs-comment">//handle error</span>
+    <span class="hljs-keyword">return</span>;
+}
+
+<span class="hljs-comment">// here, both managers are equivalent</span></code></pre>
 				<a href="#gdprmanager" id="gdprmanager" style="color: inherit; text-decoration: none;">
 					<h3>GdprManager</h3>
 				</a>

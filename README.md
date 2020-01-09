@@ -7,22 +7,38 @@ This library helps you build a GPDR compliant system by providing you easy to ma
 Using ES6-style imports:
 ```javascript
 import {
+    //most useful
+    GdprStorage,
+    GdprManagerBuilder,
+    GdprDeserializer,
+    
+    //helpers
     makeGuard,
     GdprGuardGroup,
     GdprManager,
-    GdprStorage,
-    GdprManagerBuilder,
+    GdprSerializer,
+    
+    //for completion
+    storageFromOrdinal,
 } from "gdpr-guard"
 ```
 
 Using node style require:
 ```javascript
 const {
+    //most useful
+    GdprStorage,
+    GdprManagerBuilder,
+    GdprDeserializer,
+    
+    //helpers
     makeGuard,
     GdprGuardGroup,
     GdprManager,
-    GdprStorage,
-    GdprManagerBuilder,
+    GdprSerializer,
+    
+    //for completion
+    storageFromOrdinal,
 } = require("gdpr-guard");
 ```
 
@@ -102,6 +118,8 @@ console.log(manager.raw()); // inspect useful information
 ```javascript
 import { GdprManagerBuilder, GdprDeserializer } from "gdpr-guard"
 
+// [...]
+
 const manager = GdprManagerBuilder.make()
 	// [...]
 .build();
@@ -111,8 +129,12 @@ const raw = manager.raw();
 
 const raw = //get from local storage
 const manager = GdprDeserializer.manager(raw);
-if(manager === null) //failed deserialization
+if(manager === null){ //failed deserialization
     //handle error
+    return;
+}
+
+// here, both managers are equivalent
 ```
 
 
