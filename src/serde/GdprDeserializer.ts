@@ -1,9 +1,22 @@
 import { GdprManager } from "../GdprManager"
 import { GdprStorage, storageFromOrdinal } from "../GdprStorage"
-import { GdprGuardGroup } from "../GdprGuardGroup";
-import { GdprGuard, makeGuard } from "../GdprGuard";
+import { GdprGuardGroup } from "../GdprGuardGroup"
+import { GdprGuard, makeGuard } from "../GdprGuard"
 
-class GdprDeserializer{
+/**
+ * Namespace-like class that allows deserialization from raw format
+ * @abstract
+ * @class GdprDeserializer
+ * @export
+ */
+abstract class GdprDeserializer{
+    /**
+     * Deserialize a GdprManager from its raw representation
+     * @param {any} raw The serialized manager
+     * @returns {?GdprManager}
+     * @static
+     * @memberof GdprDeserializer
+     */
     static manager(raw: any): GdprManager|null{
         const allKeys = ["enabled", "groups"].every(key => key in raw);
         const validateFields = allKeys
@@ -27,6 +40,13 @@ class GdprDeserializer{
         return manager;
     }
 
+    /**
+     * Deserialize a GdprGuardGroup from its raw representation
+     * @param {any} raw The serialized group
+     * @returns {?GdprGuardGroup}
+     * @static
+     * @memberof GdprDeserializer
+     */
     static group(raw: any): GdprGuardGroup|null{
         const guard: GdprGuard|null = this.guard(raw);
         if(guard === null)
@@ -62,6 +82,13 @@ class GdprDeserializer{
         return group;
     }
 
+    /**
+     * Deserialize a GdprGuard from its raw representation
+     * @param {any} raw The serialized guard
+     * @returns {?GdprGuard}
+     * @static
+     * @memberof GdprDeserializer
+     */
     static guard(raw: any): GdprGuard|null{
         const allKeys = [
             "name",
