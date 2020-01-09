@@ -7,33 +7,57 @@ This library helps you build a GPDR compliant system by providing you easy to ma
 Using ES6-style imports:
 ```javascript
 import {
+    //most useful
+    GdprStorage,
+    GdprManagerBuilder,
+    GdprDeserializer,
+    
+    //helpers
     makeGuard,
     GdprGuardGroup,
     GdprManager,
-    GdprStorage,
-    GdprManagerBuilder,
+    GdprSerializer,
+    
+    //for completion
+    storageFromOrdinal,
 } from "gdpr-guard"
 ```
 
 Using node style require:
 ```javascript
 const {
+    //most useful
+    GdprStorage,
+    GdprManagerBuilder,
+    GdprDeserializer,
+    
+    //helpers
     makeGuard,
     GdprGuardGroup,
     GdprManager,
-    GdprStorage,
-    GdprManagerBuilder,
+    GdprSerializer,
+    
+    //for completion
+    storageFromOrdinal,
 } = require("gdpr-guard");
 ```
 
 Directly from your browser:
 ```javascript
 const {
+    //most useful
+    GdprStorage,
+    GdprManagerBuilder,
+    GdprDeserializer,
+    
+    //helpers
     makeGuard,
     GdprGuardGroup,
     GdprManager,
-    GdprStorage,
-    GdprManagerBuilder,
+    GdprSerializer,
+    
+    //for completion
+    storageFromOrdinal,
 } = gdprGuard;
 ```
 
@@ -84,6 +108,36 @@ const manager = GdprManagerBuilder.make()
 
 console.log(manager.raw()); // inspect useful information
 ```
+
+
+
+### GdprDeserializer
+
+`GdprDeserializer` allows you to retrieve a gdpr object from its `raw` representation.
+
+```javascript
+import { GdprManagerBuilder, GdprDeserializer } from "gdpr-guard"
+
+// [...]
+
+const manager = GdprManagerBuilder.make()
+	// [...]
+.build();
+
+const raw = manager.raw();
+//store in local storage
+
+const raw = //get from local storage
+const manager = GdprDeserializer.manager(raw);
+if(manager === null){ //failed deserialization
+    //handle error
+    return;
+}
+
+// here, both managers are equivalent
+```
+
+
 
 ### GdprManager
 
