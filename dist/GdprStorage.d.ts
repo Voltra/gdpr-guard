@@ -8,4 +8,5 @@ declare enum GdprStorage {
     ServerStorage = 16,
     All = 30
 }
-export { GdprStorage, };
+declare const storageFromOrdinal: (key: number) => GdprStorage | null;
+export { GdprStorage, storageFromOrdinal, };
