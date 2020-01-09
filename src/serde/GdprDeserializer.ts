@@ -1,10 +1,10 @@
 import { GdprManager } from "../GdprManager"
-import { GdprStorage } from "../GdprStorage"
+import { GdprStorage, storageFromOrdinal } from "../GdprStorage"
 import { GdprGuardGroup } from "../GdprGuardGroup";
 import { GdprGuard, makeGuard } from "../GdprGuard";
 
 class GdprDeserializer{
-    static manager(raw: object): GdprManager|null{
+    static manager(raw: any): GdprManager|null{
         const allKeys = ["enabled", "groups"].every(key => key in raw);
         const validateFields = allKeys
         && typeof raw.enabled == "boolean"
@@ -13,11 +13,11 @@ class GdprDeserializer{
         if(!validateFields)
             return null;
 
-        const groups: (GdprGuardGroup|null)[] = (<object[]>raw.groups)
-        .map(this.group.bind(this))
+        const groups: (GdprGuardGroup|null)[] = (<any[]>raw.groups)
+        .map(group => this.group(group))
         .filter(group => group !== null);
 
-        const manager = GdprManager.create(groups);
+        const manager = GdprManager.create([]);
         manager.enabled = !!raw.enabled;
 
         if(!groups.length)
@@ -27,7 +27,7 @@ class GdprDeserializer{
         return manager;
     }
 
-    static group(raw: object): GdprGuardGroup|null{
+    static group(raw: any): GdprGuardGroup|null{
         const guard: GdprGuard|null = this.guard(raw);
         if(guard === null)
             return null;
@@ -51,7 +51,7 @@ class GdprDeserializer{
         );
 
 
-        const guards: (GdprGuard|null)[] = (<object[]>raw.guards)
+        const guards: (GdprGuard|null)[] = (<any[]>raw.guards)
         .map(guard => keys.every(key => key in guard) ? this.group(guard) : this.guard(guard))
         .filter(guard => guard !== null);
 
@@ -62,7 +62,7 @@ class GdprDeserializer{
         return group;
     }
 
-    static guard(raw: object): GdprGuard|null{
+    static guard(raw: any): GdprGuard|null{
         const allKeys = [
             "name",
             "enabled",
@@ -83,7 +83,7 @@ class GdprDeserializer{
         return !validateFields ? null : makeGuard(
             raw.name,
             raw.description,
-            GdprStorage[raw.storage],
+            storageFromOrdinal(raw.storage) as GdprStorage,
             !!raw.required,
             !!raw.enabled
         );
