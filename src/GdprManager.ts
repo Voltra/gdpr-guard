@@ -28,21 +28,6 @@ class GdprManager implements GdprGuardCollection{
     readonly storage: GdprStorage = GdprStorage.None;
     required: boolean = false;
 
-    static fromRaw(raw: object): GdprManager|null {
-        const allKeys = ["enabled", "storage", "groups"].every(key => key in raw);
-        const fail = !allKeys
-        || typeof raw.enabled != "boolean"
-        || !Array.isArray(raw.groups);
-
-        //TODO: deserialize everything
-
-        if(fail)
-            return null;
-
-        const manager = this.create(groups);
-        manager.enabled = !!raw.enabled;
-    }
-
     /**
      * Creates an instance of GdprManager.
      * @memberof GdprManager
