@@ -1,8 +1,9 @@
-import { makeGuard } from "./GdprGuard"
-import { GdprGuardGroup } from "./GdprGuardGroup"
-import { GdprManager } from "./GdprManager"
-import { GdprStorage } from "./GdprStorage"
-import { GdprManagerBuilder } from "./builders/builders"
+export { makeGuard } from "./GdprGuard"
+export { GdprGuardGroup } from "./GdprGuardGroup"
+export { GdprManager } from "./GdprManager"
+export { GdprStorage, storageFromOrdinal } from "./GdprStorage"
+export { GdprManagerBuilder } from "./builders/builders"
+export { GdprDeserializer } from "./serde/GdprDeserializer"
 
 /*
 
@@ -20,11 +21,3 @@ const $gdpr: GdprManager = GdprManagerBuilder.make()
 .build();
 
 */
-
-export {
-    makeGuard,
-    GdprGuardGroup,
-    GdprManager,
-    GdprStorage,
-    GdprManagerBuilder,
-}
