@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>gdpr-guard - v1.1.0</title>
+	<title>gdpr-guard - v1.2.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">gdpr-guard - v1.1.0</a>
+					<a href="index.html" class="title">gdpr-guard - v1.2.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -108,9 +108,6 @@
 						<li class=" tsd-kind-function tsd-is-not-exported">
 							<a href="globals.html#makeguard" class="tsd-kind-icon">make<wbr>Guard</a>
 						</li>
-						<li class=" tsd-kind-function tsd-is-not-exported">
-							<a href="globals.html#storagefromordinal" class="tsd-kind-icon">storage<wbr>From<wbr>Ordinal</a>
-						</li>
 					</ul>
 				</ul>
 				<ul>
@@ -130,6 +127,7 @@
 					<p>Simple GDPR manager</p>
 				</blockquote>
 				<p>This library helps you build a GPDR compliant system by providing you easy to manipulate interfaces.</p>
+				<p>If you need any help, you&#39;re more than welcome on my <a href="https://discordapp.com/invite/JtWAjbw">official Discord server</a> dedicated to my open-source projects.</p>
 				<a href="#how-to-import" id="how-to-import" style="color: inherit; text-decoration: none;">
 					<h2>How to import</h2>
 				</a>
@@ -145,9 +143,6 @@
     GdprGuardGroup,
     GdprManager,
     GdprSerializer,
-
-    <span class="hljs-comment">//for completion</span>
-    storageFromOrdinal,
 } <span class="hljs-keyword">from</span> <span class="hljs-string">"gdpr-guard"</span></code></pre>
 				<p>Using node style require:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> {
@@ -161,9 +156,6 @@
     GdprGuardGroup,
     GdprManager,
     GdprSerializer,
-
-    <span class="hljs-comment">//for completion</span>
-    storageFromOrdinal,
 } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"gdpr-guard"</span>);</code></pre>
 				<p>Directly from your browser:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> {
@@ -177,9 +169,6 @@
     GdprGuardGroup,
     GdprManager,
     GdprSerializer,
-
-    <span class="hljs-comment">//for completion</span>
-    storageFromOrdinal,
 } = gdprGuard;</code></pre>
 				<a href="#what-are-the-essential-design-choices-to-keep-in-mind" id="what-are-the-essential-design-choices-to-keep-in-mind" style="color: inherit; text-decoration: none;">
 					<h2>What are the essential design choices to keep in mind</h2>
