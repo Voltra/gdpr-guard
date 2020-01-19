@@ -27,7 +27,7 @@ class GdprGroupBuilder extends GdprManagerBuilder{
     ){
         super();
         this.storage = storage;
-        if(require)
+        if(!!require)
             this.enable = true;
     }
 
@@ -51,7 +51,7 @@ class GdprGroupBuilder extends GdprManagerBuilder{
      * @returns {GdprGroupBuilder}
      * @memberof GdprGroupBuilder
      */
-    public static create(mb: GdprManagerBuilder, name: string, description: string = "", storage: GdprStorage|null = null, enabled: boolean = true, required: boolean = true): GdprGroupBuilder{
+    public static create(mb: GdprManagerBuilder, name: string, description: string = "", storage: GdprStorage|null = null, enabled: boolean = true, required: boolean = false): GdprGroupBuilder{
         return new GdprGroupBuilder(mb, name, description, storage || GdprStorage.Cookie, enabled, required);
     }
 
