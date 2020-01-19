@@ -3,6 +3,8 @@
 
 This library helps you build a GPDR compliant system by providing you easy to manipulate interfaces.
 
+If you need any help, you're more than welcome on my [official Discord server](https://discordapp.com/invite/JtWAjbw) dedicated to my open-source projects.
+
 ## How to import
 Using ES6-style imports:
 ```javascript
@@ -11,15 +13,12 @@ import {
     GdprStorage,
     GdprManagerBuilder,
     GdprDeserializer,
-    
+
     //helpers
     makeGuard,
     GdprGuardGroup,
     GdprManager,
     GdprSerializer,
-    
-    //for completion
-    storageFromOrdinal,
 } from "gdpr-guard"
 ```
 
@@ -30,15 +29,12 @@ const {
     GdprStorage,
     GdprManagerBuilder,
     GdprDeserializer,
-    
+
     //helpers
     makeGuard,
     GdprGuardGroup,
     GdprManager,
     GdprSerializer,
-    
-    //for completion
-    storageFromOrdinal,
 } = require("gdpr-guard");
 ```
 
@@ -49,15 +45,12 @@ const {
     GdprStorage,
     GdprManagerBuilder,
     GdprDeserializer,
-    
+
     //helpers
     makeGuard,
     GdprGuardGroup,
     GdprManager,
     GdprSerializer,
-    
-    //for completion
-    storageFromOrdinal,
 } = gdprGuard;
 ```
 
