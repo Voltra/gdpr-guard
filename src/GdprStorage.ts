@@ -45,39 +45,6 @@ enum GdprStorage{
     All = Cookie | LocalStorage | SessionStorage | IndexedDb | FileSystem | ServerStorage,
 }
 
-const storageFromOrdinal = (key: number): GdprStorage|null => {
-    // Thank you very much typescript
-    switch(true){
-        case key == GdprStorage.All:
-            return GdprStorage.All;
-
-        case key == GdprStorage.None:
-            return GdprStorage.None;
-
-        case key == GdprStorage.Cookie:
-            return GdprStorage.Cookie;
-
-        case key == GdprStorage.LocalStorage:
-            return GdprStorage.LocalStorage;
-
-        case key == GdprStorage.SessionStorage:
-            return GdprStorage.SessionStorage;
-
-        case key == GdprStorage.IndexedDb:
-            return GdprStorage.IndexedDb;
-
-        case key == GdprStorage.FileSystem:
-            return GdprStorage.FileSystem;
-
-        case key == GdprStorage.ServerStorage:
-            return GdprStorage.ServerStorage;
-
-        default:
-            return null;
-    }
-};
-
 export {
     GdprStorage,
-    storageFromOrdinal,
 }

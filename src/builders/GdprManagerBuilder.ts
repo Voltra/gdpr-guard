@@ -32,7 +32,7 @@ class GdprManagerBuilder{
      * @memberof GdprManagerBuilder
      */
     startGroup(storage: GdprStorage|null = null, name: string = "", description: string = "", enabled: boolean = true): GdprGroupBuilder{
-        return GdprGroupBuilder.create(this, name, description, storage, enabled);
+        return GdprGroupBuilder.create(this, name, description, storage, enabled, false);
     }
 
     /**
@@ -44,7 +44,7 @@ class GdprManagerBuilder{
      * @memberof GdprManagerBuilder
      */
     startRequiredGroup(storage: GdprStorage|null = null, name: string = "", description: string = ""){
-        return this.startGroup(storage, name, description, true).enabled();
+        return this.startEnabledGroup(storage, name, description).required();
     }
 
     /**
@@ -56,7 +56,7 @@ class GdprManagerBuilder{
      * @memberof GdprManagerBuilder
      */
     startEnabledGroup(storage: GdprStorage|null = null, name: string = "", description: string = ""): GdprGroupBuilder{
-        return this.startGroup(storage, name, description, true);
+        return this.startGroup(storage, name, description, true).enabled();
     }
 
     /**
@@ -68,7 +68,7 @@ class GdprManagerBuilder{
      * @memberof GdprManagerBuilder
      */
     startDisabledGroup(storage: GdprStorage|null = null, name: string = "", description: string = ""): GdprGroupBuilder{
-        return this.startGroup(storage, name, description, false);
+        return this.startGroup(storage, name, description, false).disabled();
     }
 
     /**

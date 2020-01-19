@@ -1,5 +1,5 @@
 import { GdprManager } from "../GdprManager"
-import { GdprStorage, storageFromOrdinal } from "../GdprStorage"
+import { GdprStorage } from "../GdprStorage"
 import { GdprGuardGroup } from "../GdprGuardGroup"
 import { GdprGuard, makeGuard } from "../GdprGuard"
 
@@ -26,9 +26,9 @@ abstract class GdprDeserializer{
         if(!validateFields)
             return null;
 
-        const groups: (GdprGuardGroup|null)[] = (<any[]>raw.groups)
+        const groups: GdprGuardGroup[] = (<any[]>raw.groups)
         .map(group => this.group(group))
-        .filter(group => group !== null);
+        .filter(group => group !== null) as GdprGuardGroup[];
 
         const manager = GdprManager.create([]);
         manager.enabled = !!raw.enabled;
@@ -36,7 +36,7 @@ abstract class GdprDeserializer{
         if(!groups.length)
             return null;
 
-        groups.forEach(group => manager.addGroup(group as GdprGuardGroup));
+        groups.forEach(group => manager.addGroup(group));
         return manager;
     }
 
@@ -71,14 +71,14 @@ abstract class GdprDeserializer{
         );
 
 
-        const guards: (GdprGuard|null)[] = (<any[]>raw.guards)
+        const guards: GdprGuard[] = (<any[]>raw.guards)
         .map(guard => keys.every(key => key in guard) ? this.group(guard) : this.guard(guard))
-        .filter(guard => guard !== null);
+        .filter(guard => guard !== null) as GdprGuard[];
 
         if(!guards.length)
             return null;
 
-        guards.forEach(guard => group.addGuard(guard as GdprGuard));
+        guards.forEach(guard => group.addGuard(guard));
         return group;
     }
 
@@ -110,7 +110,7 @@ abstract class GdprDeserializer{
         return !validateFields ? null : makeGuard(
             raw.name,
             raw.description,
-            storageFromOrdinal(raw.storage) as GdprStorage,
+            raw.storage as GdprStorage,
             !!raw.required,
             !!raw.enabled
         );

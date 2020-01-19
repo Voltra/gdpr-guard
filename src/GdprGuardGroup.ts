@@ -66,7 +66,7 @@ class GdprGuardGroup implements GdprGuardCollection {
      * @memberof GdprGuardGroup
      */
     hasGuard(name: string): boolean{
-        return this.bindings.has(name);
+        return this.name === name || this.bindings.has(name);
     }
 
     /**
@@ -74,6 +74,9 @@ class GdprGuardGroup implements GdprGuardCollection {
      * @memberof GdprGuardGroup
      */
     getGuard(name: string): GdprGuard | null{
+        if(this.name === name)
+            return this;
+
         return this.bindings.get(name) || null;
     }
 
