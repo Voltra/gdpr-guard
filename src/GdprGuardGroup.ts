@@ -119,6 +119,7 @@ class GdprGuardGroup implements GdprGuardCollection {
      * @returns {GdprGuardGroup}
      */
     enable(): GdprGuardGroup{
+        this.enabled = true;
         return this.doForEachGuard(guard => guard.enable());
     }
 
@@ -128,6 +129,7 @@ class GdprGuardGroup implements GdprGuardCollection {
      * @returns {GdprGuardGroup}
      */
     disable(): GdprGuardGroup{
+        this.enabled = false;
         return this.doForEachGuard(guard => guard.disable());
     }
 
