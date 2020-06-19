@@ -1,6 +1,8 @@
 # gdpr-guard
 > Simple GDPR manager
 
+<center><img src="https://github.com/Voltra/gdpr-guard/raw/master/gdpr-guard.png" alt="Logo" width="250px"/></center>
+
 This library helps you build a GPDR compliant system by providing you easy to manipulate interfaces.
 
 If you need any help, you're more than welcome on my [official Discord server](https://discordapp.com/invite/JtWAjbw) dedicated to my open-source projects.
@@ -180,6 +182,7 @@ You can:
 ```typescript
 declare function makeGuard(name: string, description: string, storage?: GdprStorage, required?: boolean, enabled?: boolean | null): GdprGuard;
 ```
+<<<<<<< HEAD
 
 ### GdprSaviorAdapter
 
@@ -215,3 +218,5 @@ interface GdprSavior{
 }
 ```
 
+=======
+>>>>>>> 6fe41a4d027101058825697f27c26b44bfab5ea7
