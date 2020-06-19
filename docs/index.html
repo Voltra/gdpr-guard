@@ -88,6 +88,9 @@
 							<a href="classes/gdprmanagerbuilder.html" class="tsd-kind-icon">Gdpr<wbr>Manager<wbr>Builder</a>
 						</li>
 						<li class=" tsd-kind-class tsd-is-not-exported">
+							<a href="classes/gdprsavioradapter.html" class="tsd-kind-icon">Gdpr<wbr>Savior<wbr>Adapter</a>
+						</li>
+						<li class=" tsd-kind-class tsd-is-not-exported">
 							<a href="classes/gdprserializer.html" class="tsd-kind-icon">Gdpr<wbr>Serializer</a>
 						</li>
 						<li class=" tsd-kind-interface tsd-is-not-exported">
@@ -104,6 +107,12 @@
 						</li>
 						<li class=" tsd-kind-interface tsd-is-not-exported">
 							<a href="interfaces/gdprmanagerraw.html" class="tsd-kind-icon">Gdpr<wbr>Manager<wbr>Raw</a>
+						</li>
+						<li class=" tsd-kind-interface tsd-is-not-exported">
+							<a href="interfaces/gdprsavior.html" class="tsd-kind-icon">Gdpr<wbr>Savior</a>
+						</li>
+						<li class=" tsd-kind-type-alias tsd-is-not-exported">
+							<a href="globals.html#gdprmanagerfactory" class="tsd-kind-icon">Gdpr<wbr>Manager<wbr>Factory</a>
 						</li>
 						<li class=" tsd-kind-function tsd-is-not-exported">
 							<a href="globals.html#makeguard" class="tsd-kind-icon">make<wbr>Guard</a>
@@ -143,6 +152,7 @@
     GdprGuardGroup,
     GdprManager,
     GdprSerializer,
+    GdprSaviorAdapter,
 } <span class="hljs-keyword">from</span> <span class="hljs-string">"gdpr-guard"</span></code></pre>
 				<p>Using node style require:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> {
@@ -156,6 +166,7 @@
     GdprGuardGroup,
     GdprManager,
     GdprSerializer,
+    GdprSaviorAdapter,
 } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"gdpr-guard"</span>);</code></pre>
 				<p>Directly from your browser:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> {
@@ -169,6 +180,7 @@
     GdprGuardGroup,
     GdprManager,
     GdprSerializer,
+    GdprSaviorAdapter,
 } = gdprGuard;</code></pre>
 				<a href="#what-are-the-essential-design-choices-to-keep-in-mind" id="what-are-the-essential-design-choices-to-keep-in-mind" style="color: inherit; text-decoration: none;">
 					<h2>What are the essential design choices to keep in mind</h2>
@@ -283,6 +295,29 @@
 				</a>
 				<p><code>makeGuard</code> is a function that creates the simplest guard possible, it has the following signature:</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">declare</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeGuard</span>(<span class="hljs-params">name: <span class="hljs-built_in">string</span>, description: <span class="hljs-built_in">string</span>, storage?: GdprStorage, required?: <span class="hljs-built_in">boolean</span>, enabled?: <span class="hljs-built_in">boolean</span> | <span class="hljs-literal">null</span></span>): <span class="hljs-title">GdprGuard</span></span>;</code></pre>
+				<a href="#gdprsavioradapter" id="gdprsavioradapter" style="color: inherit; text-decoration: none;">
+					<h3>GdprSaviorAdapter</h3>
+				</a>
+				<p>A class that implements most of the behavior for the Savior API.</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> GdprSaviorAdapter <span class="hljs-keyword">implements</span> GdprSavior{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> restore(shouldUpdate?: <span class="hljs-built_in">boolean</span>): <span class="hljs-built_in">Promise</span>&lt;GdprManager|<span class="hljs-literal">null</span>&gt;;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> store(manager: GdprManager): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">boolean</span>&gt;;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> updateSharedManager(manager: GdprManager): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+}</code></pre>
+				<a href="#savior-api" id="savior-api" style="color: inherit; text-decoration: none;">
+					<h2>Savior API</h2>
+				</a>
+				<p>This API helps saving and restoring the manager state. It is exposed mainly for library authors as it helps creating various bindings for frameworks.</p>
+				<p>This is the interface:</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> GdprSavior{
+    restore(shouldUpdate?: <span class="hljs-built_in">boolean</span>): <span class="hljs-built_in">Promise</span>&lt;GdprManager|<span class="hljs-literal">null</span>&gt;;
+    exists(shouldUpdate?: <span class="hljs-built_in">boolean</span>): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">boolean</span>&gt;;
+    restoreOrCreate(factory: GdprManagerFactory): <span class="hljs-built_in">Promise</span>&lt;GdprManager&gt;;
+    store(manager: GdprManager): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">boolean</span>&gt;;
+    storeIfNotExists(manager: GdprManager): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">boolean</span>&gt;;
+    updateSharedManager(manager: GdprManager): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+    check(): <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+}</code></pre>
 			</div>
 			<footer>
 				<div class="tsd-legend-group">
