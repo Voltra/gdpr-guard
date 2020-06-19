@@ -4,6 +4,7 @@ export { GdprManager } from "./GdprManager"
 export { GdprStorage } from "./GdprStorage"
 export { GdprManagerBuilder } from "./builders/builders"
 export { GdprDeserializer } from "./serde/GdprDeserializer"
+export { GdprSaviorAdapter } from "./serde/GdprSavior"
 
 /*
 

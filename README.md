@@ -19,6 +19,7 @@ import {
     GdprGuardGroup,
     GdprManager,
     GdprSerializer,
+    GdprSaviorAdapter,
 } from "gdpr-guard"
 ```
 
@@ -35,6 +36,7 @@ const {
     GdprGuardGroup,
     GdprManager,
     GdprSerializer,
+    GdprSaviorAdapter,
 } = require("gdpr-guard");
 ```
 
@@ -51,6 +53,7 @@ const {
     GdprGuardGroup,
     GdprManager,
     GdprSerializer,
+    GdprSaviorAdapter,
 } = gdprGuard;
 ```
 
@@ -177,3 +180,38 @@ You can:
 ```typescript
 declare function makeGuard(name: string, description: string, storage?: GdprStorage, required?: boolean, enabled?: boolean | null): GdprGuard;
 ```
+
+### GdprSaviorAdapter
+
+A class that implements most of the behavior for the Savior API.
+
+```typescript
+abstract class GdprSaviorAdapter implements GdprSavior{
+	public abstract restore(shouldUpdate?: boolean): Promise<GdprManager|null>;
+	public abstract store(manager: GdprManager): Promise<boolean>;
+	public abstract updateSharedManager(manager: GdprManager): Promise<void>;
+}
+```
+
+
+
+
+
+## Savior API
+
+This API helps saving and restoring the manager state. It is exposed mainly for library authors as it helps creating various bindings for frameworks.
+
+This is the interface:
+
+```typescript
+interface GdprSavior{
+	restore(shouldUpdate?: boolean): Promise<GdprManager|null>;
+	exists(shouldUpdate?: boolean): Promise<boolean>;
+	restoreOrCreate(factory: GdprManagerFactory): Promise<GdprManager>;
+	store(manager: GdprManager): Promise<boolean>;
+	storeIfNotExists(manager: GdprManager): Promise<boolean>;
+	updateSharedManager(manager: GdprManager): Promise<void>;
+	check(): Promise<void>;
+}
+```
+
