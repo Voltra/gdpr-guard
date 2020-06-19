@@ -217,6 +217,3 @@ interface GdprSavior{
 	check(): Promise<void>;
 }
 ```
-
-=======
->>>>>>> 6fe41a4d027101058825697f27c26b44bfab5ea7
