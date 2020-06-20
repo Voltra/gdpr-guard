@@ -182,7 +182,6 @@ You can:
 ```typescript
 declare function makeGuard(name: string, description: string, storage?: GdprStorage, required?: boolean, enabled?: boolean | null): GdprGuard;
 ```
-<<<<<<< HEAD
 
 ### GdprSaviorAdapter
 
