@@ -1,7 +1,7 @@
-export { makeGuard } from "./GdprGuard";
-export { GdprGuardGroup } from "./GdprGuardGroup";
-export { GdprManager } from "./GdprManager";
-export { GdprStorage } from "./GdprStorage";
-export { GdprManagerBuilder } from "./builders/builders";
-export { GdprDeserializer } from "./serde/GdprDeserializer";
-export { GdprSaviorAdapter } from "./serde/GdprSavior";
+export * from "./GdprGuard";
+export * from "./GdprGuardGroup";
+export * from "./GdprManager";
+export * from "./GdprStorage";
+export * from "./builders/builders";
+export * from "./serde/GdprDeserializer";
+export * from "./serde/GdprSavior";
