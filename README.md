@@ -190,7 +190,7 @@ A class that implements most of the behavior for the Savior API.
 ```typescript
 abstract class GdprSaviorAdapter implements GdprSavior{
 	public abstract restore(shouldUpdate?: boolean): Promise<GdprManager|null>;
-	public abstract store(manager: GdprManager): Promise<boolean>;
+	public abstract store(manager: GdprManagerRaw): Promise<boolean>;
 	public abstract updateSharedManager(manager: GdprManager): Promise<void>;
 }
 ```
@@ -210,8 +210,8 @@ interface GdprSavior{
 	restore(shouldUpdate?: boolean): Promise<GdprManager|null>;
 	exists(shouldUpdate?: boolean): Promise<boolean>;
 	restoreOrCreate(factory: GdprManagerFactory): Promise<GdprManager>;
-	store(manager: GdprManager): Promise<boolean>;
-	storeIfNotExists(manager: GdprManager): Promise<boolean>;
+	store(manager: GdprManagerRaw): Promise<boolean>;
+	storeIfNotExists(manager: GdprManagerRaw): Promise<boolean>;
 	updateSharedManager(manager: GdprManager): Promise<void>;
 	check(): Promise<void>;
 }
