@@ -1,4 +1,4 @@
-import { GdprManager } from "../GdprManager";
+import { GdprManagerRaw, GdprManager } from "../GdprManager";
 
 /**
  * Factory function for a GdprManager
@@ -36,13 +36,13 @@ interface GdprSavior{
 	 * Overwrite the saved state of the manager
 	 * @param manager - The manager to store (state to save)
 	 */
-	store(manager: GdprManager): Promise<boolean>;
+	store(manager: GdprManagerRaw): Promise<boolean>;
 
 	/**
 	 * Store the manager state if none is already save
 	 * @param manager - The manager to store (state to save)
 	 */
-	storeIfNotExists(manager: GdprManager): Promise<boolean>;
+	storeIfNotExists(manager: GdprManagerRaw): Promise<boolean>;
 
 	/**
 	 * Handle shared state updates
@@ -58,7 +58,7 @@ interface GdprSavior{
 
 abstract class GdprSaviorAdapter implements GdprSavior{
 	public abstract restore(shouldUpdate?: boolean): Promise<GdprManager|null>;
-	public abstract store(manager: GdprManager): Promise<boolean>;
+	public abstract store(manager: GdprManagerRaw): Promise<boolean>;
 	public abstract updateSharedManager(manager: GdprManager): Promise<void>;
 
 	public async exists(shouldUpdate: boolean = true): Promise<boolean>{
@@ -66,7 +66,7 @@ abstract class GdprSaviorAdapter implements GdprSavior{
 		return restored !== null;
 	}
 
-	public async storeIfNotExists(manager: GdprManager): Promise<boolean>{
+	public async storeIfNotExists(manager: GdprManagerRaw): Promise<boolean>{
 		const exists = await this.exists();
 		return exists ? true : this.store(manager);
 	}
