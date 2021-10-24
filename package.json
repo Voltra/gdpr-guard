@@ -1,6 +1,6 @@
 {
 	"name": "gdpr-guard",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"author": "Voltra <ludwig.guerin.98@gmx.fr>",
 	"homepage": "https://github.com/Voltra/gdpr-guard#readme",
 	"bugs": {
@@ -18,19 +18,19 @@
 		"build": "webpack --mode production",
 		"watch": "webpack --mode development --watch",
 		"clean": "rm -rf dist",
-		"docs": "([[ -d ./docs ]] && rm -rf ./docs); typedoc --options typedoc.config.js --out docs src"
+		"docs": "([[ -d ./docs ]] && rm -rf ./docs); typedoc --options typedoc.config.js"
 	},
 	"license": "MIT",
 	"devDependencies": {
-		"@types/node": "^13.1.2",
-		"@types/webpack": "^4.41.1",
+		"@types/node": "^16.11.4",
+		"@types/webpack": "^5.28.0",
 		"eledoc": "^0.2.1",
-		"ts-loader": "^6.2.1",
-		"ts-node": "^8.5.4",
-		"typedoc": "^0.15.6",
+		"ts-loader": "^9.2.6",
+		"ts-node": "^10.4.0",
+		"typedoc": "^0.22.6",
 		"typedoc-twilio-theme": "^1.0.0",
-		"typescript": "^3.7.4",
-		"webpack": "^4.41.5",
-		"webpack-cli": "^3.3.10"
+		"typescript": "^4.4.4",
+		"webpack": "^5.59.1",
+		"webpack-cli": "^4.9.1"
 	}
 }
