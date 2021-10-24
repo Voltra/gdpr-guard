@@ -1,9 +1,16 @@
 module.exports = {
-    mode: "file",
-    readme: "README.md",
-    exclude: [
-        "node_modules/"
-    ],
-    theme: "node_modules/eledoc/bin/default/",
-    hideGenerator: true
+	out: "docs",
+	emit: "docs",
+	entryPointStrategy: "expand",
+	entryPoints: ["src"],
+	exclude: [
+		"node_modules/"
+	],
+	theme: "default",
+	includeVersion: true,
+	readme: "README.md",
+	githubPages: true,
+
+	// mode: "file",
+	hideGenerator: true,
 };
