@@ -5,23 +5,23 @@ import { GdprManager, GdprManagerRaw } from "../GdprManager";
  * @typedef GdprManagerFactory
  * @export
  */
-type GdprManagerFactory = () => Promise<GdprManager>;
+export type GdprManagerFactory = () => Promise<GdprManager>;
 
 /**
  * Handle saving/restoring/checking semantics
  * @interface GdprSavior
  * @export
  */
-interface GdprSavior {
+export interface GdprSavior {
 	/**
 	 * Restore the manager (saved state)
-	 * @param shouldUpdate - Whether or not it should update its savior internals (should default to true)
+	 * @param shouldUpdate - Whether it should update its savior internals (should default to true)
 	 */
 	restore(shouldUpdate?: boolean): Promise<GdprManager | null>;
 
 	/**
-	 * Determine whether or not there is already an existing manager (saved state)
-	 * @param shouldUpdate - Whether or not it should update its savior internals (should default to true)
+	 * Determine whether there is already an existing manager (saved state)
+	 * @param shouldUpdate - Whether it should update its savior internals (should default to true)
 	 */
 	exists(shouldUpdate?: boolean): Promise<boolean>;
 
@@ -56,35 +56,78 @@ interface GdprSavior {
 	check(): Promise<void>;
 }
 
-abstract class GdprSaviorAdapter implements GdprSavior {
+export abstract class GdprSaviorAdapter implements GdprSavior {
+	/**
+	 * @inheritDoc
+	 * @override
+	 */
 	public abstract restore(shouldUpdate?: boolean): Promise<GdprManager | null>;
 
+
+	/**
+	 * @inheritDoc
+	 * @override
+	 */
 	public abstract store(manager: GdprManagerRaw): Promise<boolean>;
 
+
+	/**
+	 * @inheritDoc
+	 * @override
+	 */
 	public abstract updateSharedManager(manager: GdprManager): Promise<void>;
 
+
+	/**
+	 * @inheritDoc
+	 * @override
+	 */
 	public async exists(shouldUpdate: boolean = true): Promise<boolean> {
 		const restored = await this.restore(shouldUpdate);
 		return restored !== null;
 	}
 
+
+	/**
+	 * @inheritDoc
+	 * @override
+	 */
 	public async storeIfNotExists(manager: GdprManagerRaw): Promise<boolean> {
 		const exists = await this.exists();
 		return exists ? true : this.store(manager);
 	}
 
+
+	/**
+	 * @inheritDoc
+	 * @override
+	 */
 	public async restoreOrCreate(factory: GdprManagerFactory): Promise<GdprManager> {
 		const restored = await this.restore();
 
 		if (!restored) {
 			const generated = await factory();
 			this.updateSharedManager(generated);
+
+			if (generated.bannerWasShown) {
+				generated.closeBanner();
+			}
+
 			return generated;
+		}
+
+		if (restored.bannerWasShown) {
+			restored.closeBanner();
 		}
 
 		return restored;
 	}
 
+
+	/**
+	 * @inheritDoc
+	 * @override
+	 */
 	public async check(): Promise<void> {
 		await Promise.resolve();
 
@@ -92,10 +135,4 @@ abstract class GdprSaviorAdapter implements GdprSavior {
 			this.exists(true);
 		}, 100);
 	}
-}
-
-export {
-	GdprManagerFactory,
-	GdprSavior,
-	GdprSaviorAdapter,
 }

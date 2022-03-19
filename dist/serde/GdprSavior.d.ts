@@ -1,6 +1,6 @@
 import { GdprManager, GdprManagerRaw } from "../GdprManager";
-declare type GdprManagerFactory = () => Promise<GdprManager>;
-interface GdprSavior {
+export declare type GdprManagerFactory = () => Promise<GdprManager>;
+export interface GdprSavior {
     restore(shouldUpdate?: boolean): Promise<GdprManager | null>;
     exists(shouldUpdate?: boolean): Promise<boolean>;
     restoreOrCreate(factory: GdprManagerFactory): Promise<GdprManager>;
@@ -9,7 +9,7 @@ interface GdprSavior {
     updateSharedManager(manager: GdprManager): Promise<void>;
     check(): Promise<void>;
 }
-declare abstract class GdprSaviorAdapter implements GdprSavior {
+export declare abstract class GdprSaviorAdapter implements GdprSavior {
     abstract restore(shouldUpdate?: boolean): Promise<GdprManager | null>;
     abstract store(manager: GdprManagerRaw): Promise<boolean>;
     abstract updateSharedManager(manager: GdprManager): Promise<void>;
@@ -18,4 +18,3 @@ declare abstract class GdprSaviorAdapter implements GdprSavior {
     restoreOrCreate(factory: GdprManagerFactory): Promise<GdprManager>;
     check(): Promise<void>;
 }
-export { GdprManagerFactory, GdprSavior, GdprSaviorAdapter, };
