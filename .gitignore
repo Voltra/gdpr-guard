@@ -6,6 +6,7 @@ yarn.lock
 .vscode/
 node_modules/
 coverage/
+docs/
 
 
 

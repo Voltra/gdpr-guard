@@ -18,13 +18,15 @@
 		"build": "webpack --mode production",
 		"watch": "webpack --mode development --watch",
 		"clean": "rm -rf dist",
-		"docs": "([[ -d ./docs ]] && rm -rf ./docs); typedoc --options typedoc.config.js"
+		"docs": "([[ -d ./docs ]] && rm -rf ./docs); typedoc --options typedoc.config.js",
+		"deploy:docs": "gh-pages -d docs"
 	},
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^16.11.4",
 		"@types/webpack": "^5.28.0",
 		"eledoc": "^0.2.1",
+		"gh-pages": "^3.2.3",
 		"ts-loader": "^9.2.6",
 		"ts-node": "^10.4.0",
 		"typedoc": "^0.22.6",
