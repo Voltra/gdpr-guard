@@ -9,114 +9,120 @@ import { GdprGuard, makeGuard } from "../GdprGuard"
  * @class GdprDeserializer
  * @export
  */
-abstract class GdprDeserializer{
-    /**
-     * Deserialize a GdprManager from its raw representation
-     * @param {any} raw The serialized manager
-     * @returns {?GdprManager}
-     * @static
-     * @memberof GdprDeserializer
-     */
-    static manager(raw: any): GdprManager|null{
-        const allKeys = ["enabled", "groups"].every(key => key in raw);
-        const validateFields = allKeys
-        && typeof raw.enabled == "boolean"
-        && Array.isArray(raw.groups);
+abstract class GdprDeserializer {
+	/**
+	 * Deserialize a GdprManager from its raw representation
+	 * @param raw The serialized manager
+	 * @returns {?GdprManager}
+	 * @static
+	 * @memberof GdprDeserializer
+	 */
+	static manager(raw: any): GdprManager | null {
+		/*
+		For retro-compatibility, we do not check for
+		the presence of the `bannerWasShown` key
+		 */
 
-        if(!validateFields)
-            return null;
+		const allKeys = ["enabled", "groups"].every(key => key in raw);
+		const validateFields = allKeys
+			&& typeof raw.enabled == "boolean"
+			&& Array.isArray(raw.groups);
 
-        const groups: GdprGuardGroup[] = (<any[]>raw.groups)
-        .map(group => this.group(group))
-        .filter(group => group !== null) as GdprGuardGroup[];
+		if (!validateFields)
+			return null;
 
-        const manager = GdprManager.create([]);
-        manager.enabled = !!raw.enabled;
+		const groups: GdprGuardGroup[] = (<any[]>raw.groups)
+			.map(group => this.group(group))
+			.filter(group => group !== null) as GdprGuardGroup[];
 
-        if(!groups.length)
-            return null;
+		const manager = GdprManager.create([]);
+		manager.enabled = !!raw.enabled;
+		manager.bannerWasShown = !!raw.bannerWasShown;
 
-        groups.forEach(group => manager.addGroup(group));
-        return manager;
-    }
+		if (!groups.length)
+			return null;
 
-    /**
-     * Deserialize a GdprGuardGroup from its raw representation
-     * @param {any} raw The serialized group
-     * @returns {?GdprGuardGroup}
-     * @static
-     * @memberof GdprDeserializer
-     */
-    static group(raw: any): GdprGuardGroup|null{
-        const guard: GdprGuard|null = this.guard(raw);
-        if(guard === null)
-            return null;
+		groups.forEach(group => manager.addGroup(group));
+		return manager;
+	}
 
-        const keys = [
-            "guards",
-        ];
-        const allKeys = keys.every(key => key in raw);
+	/**
+	 * Deserialize a GdprGuardGroup from its raw representation
+	 * @param {any} raw The serialized group
+	 * @returns {?GdprGuardGroup}
+	 * @static
+	 * @memberof GdprDeserializer
+	 */
+	static group(raw: any): GdprGuardGroup | null {
+		const guard: GdprGuard | null = this.guard(raw);
+		if (guard === null)
+			return null;
 
-        const validateFields = allKeys
-        && Array.isArray(raw.guards);
+		const keys = [
+			"guards",
+		];
+		const allKeys = keys.every(key => key in raw);
 
-        if(!validateFields)
-            return null;
+		const validateFields = allKeys
+			&& Array.isArray(raw.guards);
 
-        const group = GdprGuardGroup.for(
-            guard.name,
-            guard.description,
-            guard.enabled,
-            guard.required
-        );
+		if (!validateFields)
+			return null;
 
-
-        const guards: GdprGuard[] = (<any[]>raw.guards)
-        .map(guard => keys.every(key => key in guard) ? this.group(guard) : this.guard(guard))
-        .filter(guard => guard !== null) as GdprGuard[];
-
-        if(!guards.length)
-            return null;
-
-        guards.forEach(guard => group.addGuard(guard));
-        return group;
-    }
-
-    /**
-     * Deserialize a GdprGuard from its raw representation
-     * @param {any} raw The serialized guard
-     * @returns {?GdprGuard}
-     * @static
-     * @memberof GdprDeserializer
-     */
-    static guard(raw: any): GdprGuard|null{
-        const allKeys = [
-            "name",
-            "enabled",
-            "required",
-            "description",
-            "storage"
-        ].every(key => key in raw);
-
-        const validateFields = allKeys
-        && typeof raw.name == "string"
-        && typeof raw.enabled == "boolean"
-        && typeof raw.required == "boolean"
-        && typeof raw.description == "string"
-        && typeof raw.storage == "number"
-        && raw.storage in  GdprStorage;
+		const group = GdprGuardGroup.for(
+			guard.name,
+			guard.description,
+			guard.enabled,
+			guard.required
+		);
 
 
-        return !validateFields ? null : makeGuard(
-            raw.name,
-            raw.description,
-            raw.storage as GdprStorage,
-            !!raw.required,
-            !!raw.enabled
-        );
-    }
+		const guards: GdprGuard[] = (<any[]>raw.guards)
+			.map(guard => keys.every(key => key in guard) ? this.group(guard) : this.guard(guard))
+			.filter(guard => guard !== null) as GdprGuard[];
+
+		if (!guards.length)
+			return null;
+
+		guards.forEach(guard => group.addGuard(guard));
+		return group;
+	}
+
+	/**
+	 * Deserialize a GdprGuard from its raw representation
+	 * @param {any} raw The serialized guard
+	 * @returns {?GdprGuard}
+	 * @static
+	 * @memberof GdprDeserializer
+	 */
+	static guard(raw: any): GdprGuard | null {
+		const allKeys = [
+			"name",
+			"enabled",
+			"required",
+			"description",
+			"storage"
+		].every(key => key in raw);
+
+		const validateFields = allKeys
+			&& typeof raw.name == "string"
+			&& typeof raw.enabled == "boolean"
+			&& typeof raw.required == "boolean"
+			&& typeof raw.description == "string"
+			&& typeof raw.storage == "number"
+			&& raw.storage in GdprStorage;
+
+
+		return !validateFields ? null : makeGuard(
+			raw.name,
+			raw.description,
+			raw.storage as GdprStorage,
+			!!raw.required,
+			!!raw.enabled
+		);
+	}
 }
 
 export {
-    GdprDeserializer,
+	GdprDeserializer,
 }
