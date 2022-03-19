@@ -1,4 +1,4 @@
-import { GdprManagerRaw, GdprManager } from "../GdprManager";
+import { GdprManager, GdprManagerRaw } from "../GdprManager";
 
 /**
  * Factory function for a GdprManager
@@ -12,12 +12,12 @@ type GdprManagerFactory = () => Promise<GdprManager>;
  * @interface GdprSavior
  * @export
  */
-interface GdprSavior{
+interface GdprSavior {
 	/**
 	 * Restore the manager (saved state)
 	 * @param shouldUpdate - Whether or not it should update its savior internals (should default to true)
 	 */
-	restore(shouldUpdate?: boolean): Promise<GdprManager|null>;
+	restore(shouldUpdate?: boolean): Promise<GdprManager | null>;
 
 	/**
 	 * Determine whether or not there is already an existing manager (saved state)
@@ -56,25 +56,27 @@ interface GdprSavior{
 	check(): Promise<void>;
 }
 
-abstract class GdprSaviorAdapter implements GdprSavior{
-	public abstract restore(shouldUpdate?: boolean): Promise<GdprManager|null>;
+abstract class GdprSaviorAdapter implements GdprSavior {
+	public abstract restore(shouldUpdate?: boolean): Promise<GdprManager | null>;
+
 	public abstract store(manager: GdprManagerRaw): Promise<boolean>;
+
 	public abstract updateSharedManager(manager: GdprManager): Promise<void>;
 
-	public async exists(shouldUpdate: boolean = true): Promise<boolean>{
+	public async exists(shouldUpdate: boolean = true): Promise<boolean> {
 		const restored = await this.restore(shouldUpdate);
 		return restored !== null;
 	}
 
-	public async storeIfNotExists(manager: GdprManagerRaw): Promise<boolean>{
+	public async storeIfNotExists(manager: GdprManagerRaw): Promise<boolean> {
 		const exists = await this.exists();
 		return exists ? true : this.store(manager);
 	}
 
-	public async restoreOrCreate(factory: GdprManagerFactory): Promise<GdprManager>{
+	public async restoreOrCreate(factory: GdprManagerFactory): Promise<GdprManager> {
 		const restored = await this.restore();
 
-		if(!restored){
+		if (!restored) {
 			const generated = await factory();
 			this.updateSharedManager(generated);
 			return generated;
@@ -83,8 +85,9 @@ abstract class GdprSaviorAdapter implements GdprSavior{
 		return restored;
 	}
 
-	public async check(): Promise<void>{
-		const _ = await Promise.resolve();
+	public async check(): Promise<void> {
+		await Promise.resolve();
+
 		setTimeout(() => {
 			this.exists(true);
 		}, 100);
