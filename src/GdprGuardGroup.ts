@@ -1,4 +1,4 @@
-import { GdprGuard, GdprGuardRaw } from "./GdprGuard"
+import { GdprGuard, GdprGuardRaw, GdprRawInto } from "./GdprGuard"
 import { GdprStorage } from "./GdprStorage"
 import { GdprGuardCollection } from "./GdprGuardCollection"
 
@@ -12,8 +12,13 @@ export interface GdprGuardGroupRaw extends GdprGuardRaw {
 /**
  * A group of guards
  */
-export class GdprGuardGroup implements GdprGuardCollection {
+export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuardGroupRaw> {
 	public readonly storage: GdprStorage = GdprStorage.None;
+
+	/**
+	 * Binding from guard name to guard
+	 * @protected
+	 */
 	protected bindings: Map<string, GdprGuard> = new Map();
 
 	/**
@@ -82,7 +87,7 @@ export class GdprGuardGroup implements GdprGuardCollection {
 		if (this.hasGuard(name)) {
 			const guard = this.getGuard(name);
 			if (guard !== null) {
-				return (<GdprGuard>guard).enabled;
+				return guard.enabled;
 			}
 		}
 
@@ -148,7 +153,6 @@ export class GdprGuardGroup implements GdprGuardCollection {
 	 * @inheritDoc
 	 * @override
 	 * @memberof GdprGuardGroup
-	 * @returns {GdprGuardGroup}
 	 */
 	enableForStorage(type: GdprStorage): GdprGuardGroup {
 		return this.doForEachGuard(guard => {
@@ -161,7 +165,6 @@ export class GdprGuardGroup implements GdprGuardCollection {
 	 * @inheritDoc
 	 * @override
 	 * @memberof GdprGuardGroup
-	 * @returns {GdprGuardGroup}
 	 */
 	disableForStorage(type: GdprStorage): GdprGuardGroup {
 		return this.doForEachGuard(guard => {
@@ -174,7 +177,6 @@ export class GdprGuardGroup implements GdprGuardCollection {
 	 * @inheritDoc
 	 * @override
 	 * @memberof GdprGuardGroup
-	 * @returns {GdprGuardGroup}
 	 */
 	toggleForStorage(type: GdprStorage): GdprGuardGroup {
 		return this.doForEachGuard(guard => {
@@ -187,7 +189,6 @@ export class GdprGuardGroup implements GdprGuardCollection {
 	 * @inheritDoc
 	 * @override
 	 * @memberof GdprGuardGroup
-	 * @returns {GdprGuardGroupRaw}
 	 */
 	raw(): GdprGuardGroupRaw {
 		const ret: GdprGuardGroupRaw = {
@@ -208,13 +209,16 @@ export class GdprGuardGroup implements GdprGuardCollection {
 	 * Execute a callback on each guard of this group
 	 * @ignore
 	 * @protected
-	 * @param {(guard: GdprGuard) => any} cb
-	 * @returns {GdprGuardGroup}
+	 * @param cb
 	 * @memberof GdprGuardGroup
 	 */
 	protected doForEachGuard(cb: (guard: GdprGuard) => any): GdprGuardGroup {
 		this.bindings.forEach(guard => cb(guard));
 		return this;
+	}
+
+	getGuards(): GdprGuard[] {
+		return [...this.bindings.values()];
 	}
 }
 

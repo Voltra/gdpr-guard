@@ -1,97 +1,117 @@
 import { GdprStorage } from "./GdprStorage"
 
+export interface GdprRawInto<RawRepr> {
+	/**
+	 * Raw/simple representation of this guard
+	 */
+	raw(): RawRepr|object;
+}
+
+/**
+ * Raw representation of a guard
+ */
+export interface GdprGuardRaw {
+	name: string,
+	enabled: boolean,
+	required: boolean,
+	description: string,
+	storage: GdprStorage,
+}
 
 /**
  * Generic type representing a guard
- * @interface GdprGuard
- * @export
  */
-interface GdprGuard {
-	readonly name: string,
-	enabled: boolean,
-	readonly description: string,
-	readonly storage: GdprStorage,
-	required: boolean,
+export interface GdprGuard extends GdprRawInto<GdprGuardRaw> {
+	/**
+	 * Unique name of this guard
+	 */
+	readonly name: string;
+
+	/**
+	 * Whether the guard is currently enabled
+	 */
+	enabled: boolean;
+
+	/**
+	 * A description of what this guard does
+	 */
+	readonly description: string;
+
+	/**
+	 * Where this guard is stored
+	 */
+	readonly storage: GdprStorage;
+
+	/**
+	 * Whether this guard is required
+	 */
+	required: boolean;
 
 	/**
 	 * Determine whether or not a guard is enabled
-	 * @param {string} name The name of the guard to look for
-	 * @returns {boolean}
+	 * @param name The name of the guard to look for
 	 * @memberof GdprGuard
 	 */
-	isEnabled(name: string): boolean,
+	isEnabled(name: string): boolean;
 
 	/**
 	 * Enable this guard
-	 * @returns {GdprGuard} this guard
+	 * @returns this guard
 	 * @memberof GdprGuard
 	 */
-	enable(): GdprGuard,
+	enable(): GdprGuard;
 
 	/**
 	 * Disable this guard
-	 * @returns {GdprGuard} this guard
+	 * @returns this guard
 	 * @memberof GdprGuard
 	 */
-	disable(): GdprGuard,
+	disable(): GdprGuard;
 
 	/**
 	 * Toggle the enabled state of this guard
-	 * @returns {GdprGuard} this guard
+	 * @returns this guard
 	 * @memberof GdprGuard
 	 */
-	toggle(): GdprGuard,
+	toggle(): GdprGuard;
 
 	/**
 	 * Make this guard required
-	 * @returns {GdprGuard} this guard
+	 * @returns this guard
 	 * @memberof GdprGuard
 	 */
-	makeRequired(): GdprGuard,
+	makeRequired(): GdprGuard;
 
 	/**
 	 * Enable guards of the given type (this guard and sub-guards)
-	 * @param {GdprStorage} type The storage type to enable all guards for
-	 * @returns {GdprGuard} this guard
+	 * @param type The storage type to enable all guards for
+	 * @returns this guard
 	 * @memberof GdprGuard
 	 */
-	enableForStorage(type: GdprStorage): GdprGuard,
+	enableForStorage(type: GdprStorage): GdprGuard;
 
 	/**
 	 * Disable guards of the given type (this guard and sub-guards)
-	 * @param {GdprStorage} type The storage type to enable all guards for
-	 * @returns {GdprGuard} this guard
+	 * @param type The storage type to enable all guards for
+	 * @returns this guard
 	 * @memberof GdprGuard
 	 */
-	disableForStorage(type: GdprStorage): GdprGuard,
+	disableForStorage(type: GdprStorage): GdprGuard;
 
 	/**
 	 * Toggle guards of the given type (this guard and sub-guards)
-	 * @param {GdprStorage} type The storage type to enable all guards for
-	 * @returns {GdprGuard} this guard
+	 * @param type The storage type to enable all guards for
+	 * @returns this guard
 	 * @memberof GdprGuard
 	 */
-	toggleForStorage(type: GdprStorage): GdprGuard,
+	toggleForStorage(type: GdprStorage): GdprGuard;
 
 	/**
 	 * Raw/simple representation of this guard
 	 * @returns {object|GdprGuardRaw}
 	 * @memberof GdprGuard
 	 */
-	raw(): object | GdprGuardRaw,
-}
-
-/**
- * Raw representation of a guard
- * @interface GdprGuardRaw
- * @export
- */
-interface GdprGuardRaw {
-	name: string,
-	enabled: boolean,
-	required: boolean,
-	description: string,
-	storage: GdprStorage,
+	raw(): object | GdprGuardRaw;
 }
 
 /**
@@ -101,10 +121,8 @@ interface GdprGuardRaw {
  * @param storage Where the data will be stored
  * @param required Whether or not it is a required guard
  * @param enabled Whether or not it is currently enabled
- * @returns {GdprGuard}
- * @export
  */
-function makeGuard(name: string, description: string, storage: GdprStorage = GdprStorage.Cookie, required: boolean = false, enabled: boolean | null = null): GdprGuard {
+export function makeGuard(name: string, description: string, storage: GdprStorage = GdprStorage.Cookie, required: boolean = false, enabled: boolean | null = null): GdprGuard {
 	return {
 		name,
 		description,
@@ -155,11 +173,4 @@ function makeGuard(name: string, description: string, storage: GdprStorage = Gdp
 			return JSON.parse(JSON.stringify(this));
 		}
 	};
-}
-
-
-export {
-	GdprGuard,
-	GdprGuardRaw,
-	makeGuard,
 }

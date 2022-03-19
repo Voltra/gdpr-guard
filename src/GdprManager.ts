@@ -1,12 +1,12 @@
-import { GdprGuard } from "./GdprGuard"
+import { GdprGuard, GdprRawInto } from "./GdprGuard"
 import { GdprGuardGroup, GdprGuardGroupRaw } from "./GdprGuardGroup";
 import { GdprGuardCollection } from "./GdprGuardCollection"
 import { GdprStorage } from "./GdprStorage";
+import { GdprManagerEventHub } from "./GdprManagerEventHub";
+import { visitGdpr } from "./visitor";
 
 /**
  * Raw representation of a guard manager
- * @interface GdprManagerRaw
- * @export
  */
 export interface GdprManagerRaw {
 	bannerWasShown: boolean;
@@ -17,18 +17,33 @@ export interface GdprManagerRaw {
 
 /**
  * Manage multiple guard groups
- * @class GdprManager
- * @implements {GdprGuardCollection}
- * @export
  */
-export class GdprManager implements GdprGuardCollection {
+export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManagerRaw> {
+	/**
+	 * Whether the banner has already been shown to the user
+	 */
+	bannerWasShown: boolean = false;
+
+	/**
+	 * Whether the whole manager is enabled
+	 */
+	enabled: boolean = true;
+
+	/**
+	 * A hub to attach listeners to events triggered by this manager
+	 */
+	events = new GdprManagerEventHub();
+
+	/**
+	 * A mapping from group name to the corresponding group
+	 * @protected
+	 */
+	protected groups: Map<string, GdprGuardGroup> = new Map();
+
 	readonly name: string = "manager";
 	readonly description: string = "Manager of GDPR guard groups";
-	bannerWasShown: boolean = false;
-	enabled: boolean = true;
 	readonly storage: GdprStorage = GdprStorage.None;
 	required: boolean = false;
-	protected groups: Map<string, GdprGuardGroup> = new Map();
 
 	/**
 	 * Creates an instance of GdprManager.
@@ -52,10 +67,23 @@ export class GdprManager implements GdprGuardCollection {
 	}
 
 	/**
-	 * Mark the GDPR banner as shown
+	 * Mark the GDPR banner as shown and trigger enable and disable events
 	 */
 	closeBanner() {
 		this.bannerWasShown = true;
+
+		const listener = (guard: GdprGuard) => {
+			if (guard.enabled) {
+				this.events.enable(guard.name);
+			} else {
+				this.events.disable(guard.name);
+			}
+		};
+
+		visitGdpr(this, {
+			onGroup: listener,
+			onGuard: listener,
+		});
 	}
 
 	/**
@@ -226,7 +254,7 @@ export class GdprManager implements GdprGuardCollection {
 			groups: [],
 		};
 
-		ret.groups = [...this.groups].map(([_, group]) => group.raw());
+		ret.groups = [...this.groups.values()].map(group => group.raw());
 
 		return ret;
 	}
@@ -259,4 +287,9 @@ export class GdprManager implements GdprGuardCollection {
 		this.groups.forEach(group => cb(group));
 		return this;
 	}
+
+	getGroups(): GdprGuardGroup[] {
+		return [...this.groups.values()];
+	}
 }
+
