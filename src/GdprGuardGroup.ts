@@ -39,7 +39,7 @@ export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuar
 	 * Factory for creating a groupe
 	 * @static
 	 * @param name The name of the group
-	 * @param [description=""] The description of the group
+	 * @param [description] The description of the group
 	 * @param [enabled=false] Whether or not the group is enabled by default
 	 * @param [required=false] Whether or not the entire group is required
 	 * @returns {GdprGuardGroup}

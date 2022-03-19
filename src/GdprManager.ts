@@ -72,17 +72,14 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	closeBanner() {
 		this.bannerWasShown = true;
 
-		const listener = (guard: GdprGuard) => {
-			if (guard.enabled) {
-				this.events.enable(guard.name);
-			} else {
-				this.events.disable(guard.name);
-			}
-		};
-
 		visitGdpr(this, {
-			onGroup: listener,
-			onGuard: listener,
+			onEach: (guard: GdprGuard) => {
+				if (guard.enabled) {
+					this.events.enable(guard.name);
+				} else {
+					this.events.disable(guard.name);
+				}
+			}
 		});
 	}
 
@@ -96,7 +93,7 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	/**
 	 * Create and add a group to this manager
 	 * @param {string} name The new group's name
-	 * @param {string} [description=""] The new group's description
+	 * @param {string} [description] The new group's description
 	 * @returns {GdprManager}
 	 * @memberof GdprManager
 	 */

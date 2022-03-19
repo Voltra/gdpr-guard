@@ -11,6 +11,7 @@ import { GdprGroupBuilder } from "./builders"
 class GdprManagerBuilder {
 	public storage: GdprStorage = GdprStorage.Cookie;
 	public groups: GdprGuardGroup[] = [];
+	public bannerWasShown: boolean = false;
 
 	/**
 	 * Factory for a builder
@@ -22,11 +23,15 @@ class GdprManagerBuilder {
 		return new GdprManagerBuilder();
 	}
 
+	withBannerShown(wasShown: boolean = true) {
+		this.bannerWasShown = wasShown;
+	}
+
 	/**
 	 * Start a new group
-	 * @param {?GdprStorage} [storage=null] The storage type of the group
-	 * @param {string} [name=""] The name of the group
-	 * @param {string} [description=""] The description of the group
+	 * @param {?GdprStorage} [storage] The storage type of the group
+	 * @param {string} [name] The name of the group
+	 * @param {string} [description] The description of the group
 	 * @param {boolean} [enabled=true] Whether or not the group is enabled
 	 * @returns {GdprGroupBuilder}
 	 * @memberof GdprManagerBuilder
@@ -37,9 +42,9 @@ class GdprManagerBuilder {
 
 	/**
 	 * Start a new group as required
-	 * @param {?GdprStorage} [storage=null] The storage type of the group
-	 * @param {string} [name=""] The name of the group
-	 * @param {string} [description=""] The description of the group
+	 * @param {?GdprStorage} [storage] The storage type of the group
+	 * @param {string} [name] The name of the group
+	 * @param {string} [description] The description of the group
 	 * @returns {GdprGroupBuilder}
 	 * @memberof GdprManagerBuilder
 	 */
@@ -49,9 +54,9 @@ class GdprManagerBuilder {
 
 	/**
 	 * Start a new enabled group
-	 * @param {?GdprStorage} [storage=null] The storage type of the group
-	 * @param {string} [name=""] The name of the group
-	 * @param {string} [description=""] The description of the group
+	 * @param {?GdprStorage} [storage] The storage type of the group
+	 * @param {string} [name] The name of the group
+	 * @param {string} [description] The description of the group
 	 * @returns {GdprGroupBuilder}
 	 * @memberof GdprManagerBuilder
 	 */
@@ -61,9 +66,9 @@ class GdprManagerBuilder {
 
 	/**
 	 * Start a new disabled group
-	 * @param {?GdprStorage} [storage=null] The storage type of the group
-	 * @param {string} [name=""] The name of the group
-	 * @param {string} [description=""] The description of the group
+	 * @param {?GdprStorage} [storage] The storage type of the group
+	 * @param {string} [name] The name of the group
+	 * @param {string} [description] The description of the group
 	 * @returns {GdprGroupBuilder}
 	 * @memberof GdprManagerBuilder
 	 */
@@ -77,7 +82,9 @@ class GdprManagerBuilder {
 	 * @memberof GdprManagerBuilder
 	 */
 	build(): GdprManager {
-		return GdprManager.create(this.groups);
+		const manager = GdprManager.create(this.groups);
+		manager.bannerWasShown = this.bannerWasShown;
+		return manager;
 	}
 
 	/**

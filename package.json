@@ -1,6 +1,6 @@
 {
 	"name": "gdpr-guard",
-	"version": "2.1.1",
+	"version": "2.2.0",
 	"author": "Voltra <ludwig.guerin.98@gmx.fr>",
 	"homepage": "https://github.com/Voltra/gdpr-guard#readme",
 	"bugs": {
@@ -18,7 +18,9 @@
 		"build": "webpack --mode production",
 		"watch": "webpack --mode development --watch",
 		"clean": "rm -rf dist",
-		"docs": "([[ -d ./docs ]] && rm -rf ./docs); typedoc --options typedoc.config.js",
+		"predocs": "[[ -d ./docs ]] && rm -rf ./docs",
+		"docs": "typedoc --options typedoc.config.js",
+		"predeploy:docs": "npm run docs",
 		"deploy:docs": "gh-pages -d docs"
 	},
 	"license": "MIT",

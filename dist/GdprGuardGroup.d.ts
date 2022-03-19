@@ -1,22 +1,21 @@
-import { GdprGuard, GdprGuardRaw } from "./GdprGuard";
+import { GdprGuard, GdprGuardRaw, GdprRawInto } from "./GdprGuard";
 import { GdprStorage } from "./GdprStorage";
 import { GdprGuardCollection } from "./GdprGuardCollection";
-interface GdprGuardGroupRaw extends GdprGuardRaw {
+export interface GdprGuardGroupRaw extends GdprGuardRaw {
     guards: GdprGuardRaw[];
 }
-declare class GdprGuardGroup implements GdprGuardCollection {
+export declare class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuardGroupRaw> {
     name: string;
     description: string;
     enabled: boolean;
     required: boolean;
-    protected bindings: Map<string, GdprGuard>;
     readonly storage: GdprStorage;
+    protected bindings: Map<string, GdprGuard>;
     constructor(name: string, description?: string, enabled?: boolean, required?: boolean);
     static for(name: string, description?: string, enabled?: boolean, required?: boolean): GdprGuardGroup;
     addGuard(guard: GdprGuard): GdprGuardGroup;
     hasGuard(name: string): boolean;
     getGuard(name: string): GdprGuard | null;
-    protected doForEachGuard(cb: (guard: GdprGuard) => any): GdprGuardGroup;
     isEnabled(name: string): boolean;
     enable(): GdprGuardGroup;
     disable(): GdprGuardGroup;
@@ -26,5 +25,6 @@ declare class GdprGuardGroup implements GdprGuardCollection {
     disableForStorage(type: GdprStorage): GdprGuardGroup;
     toggleForStorage(type: GdprStorage): GdprGuardGroup;
     raw(): GdprGuardGroupRaw;
+    protected doForEachGuard(cb: (guard: GdprGuard) => any): GdprGuardGroup;
+    getGuards(): GdprGuard[];
 }
-export { GdprGuardGroup, GdprGuardGroupRaw, };

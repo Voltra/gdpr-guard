@@ -5,7 +5,9 @@ import { GdprGroupBuilder } from "./builders";
 declare class GdprManagerBuilder {
     storage: GdprStorage;
     groups: GdprGuardGroup[];
+    bannerWasShown: boolean;
     static make(): GdprManagerBuilder;
+    withBannerShown(wasShown?: boolean): void;
     startGroup(storage?: GdprStorage | null, name?: string, description?: string, enabled?: boolean): GdprGroupBuilder;
     startRequiredGroup(storage?: GdprStorage | null, name?: string, description?: string): GdprGroupBuilder;
     startEnabledGroup(storage?: GdprStorage | null, name?: string, description?: string): GdprGroupBuilder;

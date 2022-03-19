@@ -1,4 +1,4 @@
-import { GdprManagerRaw, GdprManager } from "../GdprManager";
+import { GdprManager, GdprManagerRaw } from "../GdprManager";
 declare type GdprManagerFactory = () => Promise<GdprManager>;
 interface GdprSavior {
     restore(shouldUpdate?: boolean): Promise<GdprManager | null>;

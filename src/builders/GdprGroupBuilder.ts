@@ -36,8 +36,8 @@ class GdprGroupBuilder extends GdprManagerBuilder {
 	 * @static
 	 * @param {GdprManagerBuilder} mb The parent manager builder
 	 * @param {string} name The name of the group
-	 * @param {string} [description=""] The description of the group
-	 * @param {(GdprStorage|null)} [storage=null] The storage of the group
+	 * @param {string} [description] The description of the group
+	 * @param {?GdprStorage} [storage] The storage of the group
 	 * @param {boolean} [enabled=true] Whether or not the group should be enabled
 	 * @param {boolean} [required=true] Whether or not the group should be required
 	 * @returns {GdprGroupBuilder}
@@ -132,7 +132,7 @@ class GdprGroupBuilder extends GdprManagerBuilder {
 
 	/**
 	 * Start adding a guard
-	 * @param {(GdprStorage|null)} [storage=null] The storage for the guard (by default it uses the group's storage)
+	 * @param {?GdprStorage} [storage] The storage for the guard (by default it uses the group's storage)
 	 * @returns {GdprGuardBuilder}
 	 * @memberof GdprGroupBuilder
 	 */
@@ -142,7 +142,7 @@ class GdprGroupBuilder extends GdprManagerBuilder {
 
 	/**
 	 * Start adding a required guard
-	 * @param {(GdprStorage|null)} [storage=null] The storage for the guard (by default it uses the group's storage)
+	 * @param {?GdprStorage} [storage] The storage for the guard (by default it uses the group's storage)
 	 * @returns {GdprGuardBuilder}
 	 * @memberof GdprGroupBuilder
 	 */
@@ -153,8 +153,8 @@ class GdprGroupBuilder extends GdprManagerBuilder {
 	/**
 	 * Add an enabled guard
 	 * @param {string} name The name of the guard
-	 * @param {string} [description=""] The description of the guard
-	 * @param {(GdprStorage|null)} [storage=null] The storage of the guard
+	 * @param {string} [description] The description of the guard
+	 * @param {?GdprStorage} [storage] The storage of the guard
 	 * @returns {GdprGroupBuilder}
 	 * @memberof GdprGroupBuilder
 	 */
@@ -169,8 +169,8 @@ class GdprGroupBuilder extends GdprManagerBuilder {
 	/**
 	 * Add a disabled guard
 	 * @param {string} name The name of the guard
-	 * @param {string} [description=""] The description of the guard
-	 * @param {(GdprStorage|null)} [storage=null] The storage of the guard
+	 * @param {string} [description] The description of the guard
+	 * @param {?GdprStorage} [storage] The storage of the guard
 	 * @returns {GdprGroupBuilder}
 	 * @memberof GdprGroupBuilder
 	 */
