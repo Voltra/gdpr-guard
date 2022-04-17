@@ -1,6 +1,6 @@
 {
 	"name": "gdpr-guard",
-	"version": "2.2.2",
+	"version": "2.2.3",
 	"author": "Voltra <ludwig.guerin.98@gmx.fr>",
 	"homepage": "https://github.com/Voltra/gdpr-guard#readme",
 	"bugs": {
@@ -13,6 +13,16 @@
 	"description": "Simple GDPR manager",
 	"main": "./dist/gdpr_guard.js",
 	"types": "./dist/gdpr_guard.d.ts",
+	"keywords": [
+		"gdpr",
+		"cookies",
+		"cookie",
+		"notice",
+		"banner",
+		"consent",
+		"tracking",
+		"rgpd"
+	],
 	"scripts": {
 		"dev": "webpack --mode development",
 		"build": "webpack --mode production",
