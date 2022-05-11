@@ -18,6 +18,7 @@ module.exports = (env, argv) => {
 			libraryTarget: "umd",
 			library: "gdprGuard",
 			umdNamedDefine: true,
+			globalObject: "typeof self !== 'undefined' ? self : typeof window !== 'undefined' ? window : this",
 		},
 
 		resolve: {
