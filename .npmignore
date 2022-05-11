@@ -4,6 +4,7 @@
 **/webpack.config.js
 **/jest.config.js
 **/typedoc.config.js
+*.png
 src
 demo
 docs
