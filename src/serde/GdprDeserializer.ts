@@ -1,7 +1,48 @@
 import { GdprManager } from "../GdprManager"
 import { GdprStorage } from "../GdprStorage"
 import { GdprGuardGroup } from "../GdprGuardGroup"
-import { GdprGuard, makeGuard } from "../GdprGuard"
+import { GdprGuard, GdprGuardRaw, makeGuard } from "../GdprGuard"
+import { GdprManagerRaw } from "../../dist/GdprManager";
+import { GdprGuardGroupRaw } from "../../dist/GdprGuardGroup";
+
+/*
+	For retro-compatibility, we do not check for
+	the presence of the `bannerWasShown` key
+*/
+const managerKeys = ["enabled", "groups"];
+const groupKeys = ["guards"];
+const guardKeys = [
+	"name",
+	"enabled",
+	"required",
+	"description",
+	"storage"
+];
+
+const isManager = (raw: any): raw is GdprManagerRaw => {
+	const allKeys = managerKeys.every(key => key in raw);
+	return allKeys
+			&& typeof raw.enabled == "boolean"
+			&& Array.isArray(raw.groups);
+};
+
+const isGroup = (raw: GdprGuardRaw|any): raw is GdprGuardGroupRaw => {
+	const allKeys = groupKeys.every(key => key in raw);
+
+	return allKeys && Array.isArray(raw.guards);
+};
+
+const isGuard = (raw: any): raw is GdprGuardRaw => {
+	const allKeys = guardKeys.every(key => key in raw);
+
+	return allKeys
+		&& typeof raw.name == "string"
+		&& typeof raw.enabled == "boolean"
+		&& typeof raw.required == "boolean"
+		&& typeof raw.description == "string"
+		&& typeof raw.storage == "number"
+		&& raw.storage in GdprStorage;
+};
 
 /**
  * Namespace-like class that allows deserialization from raw format
@@ -17,21 +58,11 @@ abstract class GdprDeserializer {
 	 * @static
 	 * @memberof GdprDeserializer
 	 */
-	static manager(raw: any): GdprManager | null {
-		/*
-		For retro-compatibility, we do not check for
-		the presence of the `bannerWasShown` key
-		 */
-
-		const allKeys = ["enabled", "groups"].every(key => key in raw);
-		const validateFields = allKeys
-			&& typeof raw.enabled == "boolean"
-			&& Array.isArray(raw.groups);
-
-		if (!validateFields)
+	static manager(raw: GdprManagerRaw|any): GdprManager | null {
+		if (!isManager(raw))
 			return null;
 
-		const groups: GdprGuardGroup[] = (<any[]>raw.groups)
+		const groups: GdprGuardGroup[] = raw.groups
 			.map(group => this.group(group))
 			.filter(group => group !== null) as GdprGuardGroup[];
 
@@ -58,15 +89,7 @@ abstract class GdprDeserializer {
 		if (guard === null)
 			return null;
 
-		const keys = [
-			"guards",
-		];
-		const allKeys = keys.every(key => key in raw);
-
-		const validateFields = allKeys
-			&& Array.isArray(raw.guards);
-
-		if (!validateFields)
+		if (!isGroup(guard))
 			return null;
 
 		const group = GdprGuardGroup.for(
@@ -77,9 +100,9 @@ abstract class GdprDeserializer {
 		);
 
 
-		const guards: GdprGuard[] = (<any[]>raw.guards)
-			.map(guard => keys.every(key => key in guard) ? this.group(guard) : this.guard(guard))
-			.filter(guard => guard !== null) as GdprGuard[];
+		const guards: GdprGuard[] = raw.guards
+			.map((guard: GdprGuardRaw) => groupKeys.every(key => key in guard) ? this.group(guard) : this.guard(guard))
+			.filter((guard: GdprGuardRaw|null) => guard !== null) as GdprGuard[];
 
 		if (!guards.length)
 			return null;
@@ -96,24 +119,7 @@ abstract class GdprDeserializer {
 	 * @memberof GdprDeserializer
 	 */
 	static guard(raw: any): GdprGuard | null {
-		const allKeys = [
-			"name",
-			"enabled",
-			"required",
-			"description",
-			"storage"
-		].every(key => key in raw);
-
-		const validateFields = allKeys
-			&& typeof raw.name == "string"
-			&& typeof raw.enabled == "boolean"
-			&& typeof raw.required == "boolean"
-			&& typeof raw.description == "string"
-			&& typeof raw.storage == "number"
-			&& raw.storage in GdprStorage;
-
-
-		return !validateFields ? null : makeGuard(
+		return !isGuard(raw) ? null : makeGuard(
 			raw.name,
 			raw.description,
 			raw.storage as GdprStorage,
