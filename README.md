@@ -6,8 +6,25 @@
 
 This library helps you build a GPDR compliant system by providing you easy to manipulate interfaces.
 
-If you need any help, you're more than welcome on my [official Discord server](https://discordapp.com/invite/JtWAjbw)
-dedicated to my open-source projects.
+## Eco-system
+
+There are a handful of libraries to help you along the way:
+* binding libraries, which ease the use with your favorite frameworks & libraries
+* persistence libraries, which offer you storage/persistence solutions
+
+## Bindings
+
+* [html-gdpr-guard](https://www.npmjs.com/package/html-gdpr-guard) Use `gdpr-guard` as efficiently and easily as possible, based on data provided in the DOM
+* [dom-gdpr-guard](https://www.npmjs.com/package/dom-gdpr-guard) Use the JS DOM API to create elements based on the GdprManager's state and render it (can also use smart diffing)
+* [vue-gdpr-guard](https://www.npmjs.com/package/vue-gdpr-guard) A Vue 2 plugin that exposes global helpers as well as renderless components to help you build your UI easily (and optionally recursively)
+* [vue3-gdpr-guard](https://www.npmjs.com/package/vue3-gdpr-guard) ***WIP*** A Vue 3 plugin that aims to be a Vue 3 alternative to vue-gdpr-guard, but based on the Composition API instead
+* [react-gdpr-guard](https://www.npmjs.com/package/react-gdpr-guard) ***WIP*** A React library that provides a hooks-creating function to interact with your GdprManager, in a react-way
+* [angular-gdpr-guard](#) ***Coming Soon***
+* [svelte-gdpr-guard](#) ***Coming Soon***
+
+## Persistence
+
+* [gdpr-guard-local](https://www.npmjs.com/package/gdpr-guard-local) A simple local storage adapter for gdpr-guard
 
 ## How to import
 
@@ -280,3 +297,8 @@ interface GdprVisitor {
 
 declare function visitGdpr(guard: GdprGuard, visitor?: Partial<GdprVisitor>);
 ```
+
+## Helpline
+
+If you need any help, you're more than welcome on my [official Discord server](https://discordapp.com/invite/JtWAjbw)
+dedicated to my open-source projects.
