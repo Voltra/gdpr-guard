@@ -1,5 +1,5 @@
 import { GdprManager, GdprManagerRaw } from "../GdprManager";
-export declare type GdprManagerFactory = () => Promise<GdprManager>;
+export type GdprManagerFactory = () => Promise<GdprManager>;
 export interface GdprSavior {
     restore(shouldUpdate?: boolean): Promise<GdprManager | null>;
     exists(shouldUpdate?: boolean): Promise<boolean>;

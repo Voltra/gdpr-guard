@@ -1,4 +1,4 @@
-export declare type GdprManagerEventHandler = () => void;
+export type GdprManagerEventHandler = () => void;
 export declare class GdprManagerEventHub {
     protected eventMap: Record<string, GdprManagerEventHandler[]>;
     onEnable(guardName: string, callback: GdprManagerEventHandler): this;
