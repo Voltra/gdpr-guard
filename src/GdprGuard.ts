@@ -4,7 +4,7 @@ export interface GdprRawInto<RawRepr> {
 	/**
 	 * Raw/simple representation of this guard
 	 */
-	raw(): RawRepr|object;
+	raw(): RawRepr;
 }
 
 /**
@@ -105,13 +105,6 @@ export interface GdprGuard extends GdprRawInto<GdprGuardRaw> {
 	 * @memberof GdprGuard
 	 */
 	toggleForStorage(type: GdprStorage): GdprGuard;
-
-	/**
-	 * Raw/simple representation of this guard
-	 * @returns {object|GdprGuardRaw}
-	 * @memberof GdprGuard
-	 */
-	raw(): object | GdprGuardRaw;
 }
 
 /**

@@ -131,8 +131,6 @@ export abstract class GdprSaviorAdapter implements GdprSavior {
 	public async check(): Promise<void> {
 		await Promise.resolve();
 
-		setTimeout(() => {
-			this.exists(true);
-		}, 100);
+		await this.exists(true);
 	}
 }

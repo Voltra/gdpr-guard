@@ -6,7 +6,7 @@ import { GdprGuard, GdprGuardRaw } from "../GdprGuard"
  * @class GdprSerializer
  * @export
  */
-abstract class GdprSerializer {
+export class GdprSerializer {
 	/**
 	 * Serialize a GdprGuard (or its subtypes) to its raw format (POD)
 	 * @static
@@ -17,8 +17,4 @@ abstract class GdprSerializer {
 	static serialize(obj: GdprGuard): object | GdprGuardRaw {
 		return obj.raw();
 	}
-}
-
-export {
-	GdprSerializer,
 }

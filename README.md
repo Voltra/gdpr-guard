@@ -117,7 +117,6 @@ For instance you can use it like this:
 ```javascript
 const manager = GdprManagerBuilder
 	.make()
-		.withBannerShown(!!localStorage.getItem("gdpr_banner"))
 		.startRequiredGroup(GdprStorage.Cookie, "Functionalities", "Information purely used for the user's experience")
 		// This is a group that by default uses cookies for storage, every option and the group itself is required
 			.withEnabledGuard("PHP_SESSID", "Server session identifier")
