@@ -260,11 +260,10 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	 * Shortcircuit on predicate
 	 * @ignore
 	 * @protected
-	 * @param {(group: GdprGuardCollection) => boolean} pred
-	 * @returns {boolean}
+	 * @param pred
 	 * @memberof GdprManager
 	 */
-	protected reduceGroupsPred(pred: (group: GdprGuardCollection) => boolean): boolean {
+	protected reduceGroupsPred(pred: (group: GdprGuardGroup) => boolean): boolean {
 		for (const [_, group] of this.groups) {
 			if (pred(group))
 				return true;
@@ -276,11 +275,10 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	 * Execute a callback on each group of this guard
 	 * @ignore
 	 * @protected
-	 * @param {(group: GdprGuardCollection) => any} cb
-	 * @returns {GdprManager}
+	 * @param cb
 	 * @memberof GdprManager
 	 */
-	protected forEachGroup(cb: (group: GdprGuardCollection) => any): GdprManager {
+	protected forEachGroup(cb: (group: GdprGuardGroup) => any): GdprManager {
 		this.groups.forEach(group => cb(group));
 		return this;
 	}
