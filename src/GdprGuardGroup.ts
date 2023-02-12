@@ -65,7 +65,9 @@ export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuar
 	 * @memberof GdprGuardGroup
 	 */
 	hasGuard(name: string): boolean {
-		return this.name === name || this.bindings.has(name);
+		return this.name === name
+			|| this.bindings.has(name)
+			|| this.reduceSubGroupsPred(group => group.name === name || group.hasGuard(name))
 	}
 
 	/**
@@ -76,7 +78,9 @@ export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuar
 		if (this.name === name)
 			return this;
 
-		return this.bindings.get(name) || null;
+		return this.bindings.get(name)
+			?? this.reduceSubGroups(group => group.name === name ? group : group.getGuard(name))
+			?? null;
 	}
 
 	/**
@@ -215,6 +219,44 @@ export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuar
 	protected doForEachGuard(cb: (guard: GdprGuard) => any): GdprGuardGroup {
 		this.bindings.forEach(guard => cb(guard));
 		return this;
+	}
+
+	/**
+	 * Shortcircuit on predicate
+	 * @ignore
+	 * @protected
+	 * @param {(group: GdprGuardCollection) => boolean} pred
+	 * @returns {boolean}
+	 * @memberof GdprManager
+	 */
+	protected reduceSubGroupsPred(pred: (guard: GdprGuardGroup) => boolean): boolean {
+		for (const [_, guard] of this.bindings) {
+			if (guard instanceof GdprGuardGroup && pred(guard))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Shortcircuit on finding a matching guard
+	 * @ignore
+	 * @protected
+	 * @param extractor
+	 * @memberof GdprManager
+	 */
+	protected reduceSubGroups(extractor: (guard: GdprGuardCollection & GdprGuard) => GdprGuard|null): GdprGuard|null {
+		for (const [_, guard] of this.bindings) {
+			if (!(guard instanceof  GdprGuardGroup)) {
+				continue;
+			}
+
+			const extracted = extractor(guard);
+
+			if (extracted) {
+				return extracted;
+			}
+		}
+		return null;
 	}
 
 	getGuards(): GdprGuard[] {
