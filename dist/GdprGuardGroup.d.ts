@@ -26,5 +26,7 @@ export declare class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<
     toggleForStorage(type: GdprStorage): GdprGuardGroup;
     raw(): GdprGuardGroupRaw;
     protected doForEachGuard(cb: (guard: GdprGuard) => any): GdprGuardGroup;
+    protected reduceSubGroupsPred(pred: (guard: GdprGuardGroup) => boolean): boolean;
+    protected reduceSubGroups(extractor: (guard: GdprGuardCollection & GdprGuard) => GdprGuard | null): GdprGuard | null;
     getGuards(): GdprGuard[];
 }

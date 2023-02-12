@@ -36,7 +36,7 @@ export declare class GdprManager implements GdprGuardCollection, GdprRawInto<Gdp
     disableForStorage(type: GdprStorage): GdprManager;
     toggleForStorage(type: GdprStorage): GdprManager;
     raw(): GdprManagerRaw;
-    protected reduceGroupsPred(pred: (group: GdprGuardCollection) => boolean): boolean;
-    protected forEachGroup(cb: (group: GdprGuardCollection) => any): GdprManager;
+    protected reduceGroupsPred(pred: (group: GdprGuardGroup) => boolean): boolean;
+    protected forEachGroup(cb: (group: GdprGuardGroup) => any): GdprManager;
     getGroups(): GdprGuardGroup[];
 }
