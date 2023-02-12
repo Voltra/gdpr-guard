@@ -1,6 +1,6 @@
-import { GdprGuard, GdprGuardRaw, GdprRawInto } from "./GdprGuard"
-import { GdprStorage } from "./GdprStorage"
-import { GdprGuardCollection } from "./GdprGuardCollection"
+import { GdprGuard, GdprGuardRaw, GdprRawInto } from "./GdprGuard";
+import { GdprStorage } from "./GdprStorage";
+import { GdprGuardCollection } from "./GdprGuardCollection";
 
 /**
  * Raw representation of a guard group
@@ -65,7 +65,9 @@ export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuar
 	 * @memberof GdprGuardGroup
 	 */
 	hasGuard(name: string): boolean {
-		return this.name === name || this.bindings.has(name);
+		return this.name === name
+			|| this.bindings.has(name)
+			|| this.reduceSubGroupsPred(group => group.hasGuard(name));
 	}
 
 	/**
@@ -76,7 +78,9 @@ export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuar
 		if (this.name === name)
 			return this;
 
-		return this.bindings.get(name) || null;
+		return this.bindings.get(name)
+			?? this.reduceSubGroups(group => group.getGuard(name))
+			?? null;
 	}
 
 	/**
@@ -89,11 +93,6 @@ export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuar
 			if (guard !== null) {
 				return guard.enabled;
 			}
-		}
-
-		for (const [_, guard] of this.bindings) {
-			if (guard.isEnabled(name))
-				return true;
 		}
 
 		return false;
@@ -155,9 +154,12 @@ export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuar
 	 * @memberof GdprGuardGroup
 	 */
 	enableForStorage(type: GdprStorage): GdprGuardGroup {
+		if (this.required) {
+			return this;
+		}
+
 		return this.doForEachGuard(guard => {
-			if (guard.storage & type)
-				guard.enable();
+			guard.enableForStorage(type);
 		});
 	}
 
@@ -167,9 +169,12 @@ export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuar
 	 * @memberof GdprGuardGroup
 	 */
 	disableForStorage(type: GdprStorage): GdprGuardGroup {
+		if (this.required) {
+			return this;
+		}
+
 		return this.doForEachGuard(guard => {
-			if (guard.storage & type)
-				guard.disable();
+			guard.disableForStorage(type);
 		});
 	}
 
@@ -179,9 +184,12 @@ export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuar
 	 * @memberof GdprGuardGroup
 	 */
 	toggleForStorage(type: GdprStorage): GdprGuardGroup {
+		if (this.required) {
+			return this;
+		}
+
 		return this.doForEachGuard(guard => {
-			if (guard.storage & type)
-				return guard.toggle();
+			guard.toggleForStorage(type);
 		});
 	}
 
@@ -215,6 +223,44 @@ export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuar
 	protected doForEachGuard(cb: (guard: GdprGuard) => any): GdprGuardGroup {
 		this.bindings.forEach(guard => cb(guard));
 		return this;
+	}
+
+	/**
+	 * Shortcircuit on predicate
+	 * @ignore
+	 * @protected
+	 * @param {(group: GdprGuardCollection) => boolean} pred
+	 * @returns {boolean}
+	 * @memberof GdprManager
+	 */
+	protected reduceSubGroupsPred(pred: (guard: GdprGuardGroup) => boolean): boolean {
+		for (const [_, guard] of this.bindings) {
+			if (guard instanceof GdprGuardGroup && pred(guard))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Shortcircuit on finding a matching guard
+	 * @ignore
+	 * @protected
+	 * @param extractor
+	 * @memberof GdprManager
+	 */
+	protected reduceSubGroups(extractor: (guard: GdprGuardCollection & GdprGuard) => GdprGuard | null): GdprGuard | null {
+		for (const [_, guard] of this.bindings) {
+			if (!(guard instanceof GdprGuardGroup)) {
+				continue;
+			}
+
+			const extracted = extractor(guard);
+
+			if (extracted) {
+				return extracted;
+			}
+		}
+		return null;
 	}
 
 	getGuards(): GdprGuard[] {
