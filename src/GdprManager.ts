@@ -1,4 +1,4 @@
-import { GdprGuard, GdprRawInto } from "./GdprGuard"
+import { GdprGuard, GdprGuardRaw, GdprRawInto } from "./GdprGuard";
 import { GdprGuardGroup, GdprGuardGroupRaw } from "./GdprGuardGroup";
 import { GdprGuardCollection } from "./GdprGuardCollection"
 import { GdprStorage } from "./GdprStorage";
@@ -8,7 +8,7 @@ import { visitGdpr } from "./visitor";
 /**
  * Raw representation of a guard manager
  */
-export interface GdprManagerRaw {
+export interface GdprManagerRaw extends GdprGuardRaw {
 	bannerWasShown: boolean;
 	enabled: boolean;
 	groups: GdprGuardGroupRaw[];
@@ -22,17 +22,17 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	/**
 	 * Whether the banner has already been shown to the user
 	 */
-	bannerWasShown: boolean = false;
+	public bannerWasShown: boolean = false;
 
 	/**
 	 * Whether the whole manager is enabled
 	 */
-	enabled: boolean = true;
+	public enabled: boolean = true;
 
 	/**
 	 * A hub to attach listeners to events triggered by this manager
 	 */
-	events = new GdprManagerEventHub();
+	public readonly events = new GdprManagerEventHub();
 
 	/**
 	 * A mapping from group name to the corresponding group
@@ -40,10 +40,10 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	 */
 	protected groups: Map<string, GdprGuardGroup> = new Map();
 
-	readonly name: string = "manager";
-	readonly description: string = "Manager of GDPR guard groups";
-	readonly storage: GdprStorage = GdprStorage.None;
-	required: boolean = false;
+	public readonly name: string = "manager";
+	public readonly description: string = "Manager of GDPR guard groups";
+	public readonly storage: GdprStorage = GdprStorage.None;
+	public required: boolean = false;
 
 	/**
 	 * Creates an instance of GdprManager.
@@ -168,9 +168,8 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	 * @inheritDoc
 	 * @override
 	 * @memberof GdprManager
-	 * @returns {GdprManager}
 	 */
-	enable(): GdprManager {
+	enable(): GdprGuard {
 		this.enabled = true;
 		return this.forEachGroup(group => group.enable());
 	}
@@ -179,9 +178,8 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	 * @inheritDoc
 	 * @override
 	 * @memberof GdprManager
-	 * @returns {GdprManager}
 	 */
-	disable(): GdprManager {
+	disable(): GdprGuard {
 		this.enabled = false;
 		return this.forEachGroup(group => group.disable());
 	}
@@ -190,9 +188,8 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	 * @inheritDoc
 	 * @override
 	 * @memberof GdprManager
-	 * @returns {GdprManager}
 	 */
-	toggle(): GdprManager {
+	toggle(): GdprGuard {
 		return this.enabled ? this.disable() : this.enable();
 	}
 
@@ -201,9 +198,8 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	 * @inheritDoc
 	 * @override
 	 * @memberof GdprManager
-	 * @returns {GdprManager}
 	 */
-	makeRequired(): GdprManager {
+	makeRequired(): GdprGuard {
 		// noop
 		return this;
 	}
@@ -212,9 +208,8 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	 * @inheritDoc
 	 * @override
 	 * @memberof GdprManager
-	 * @returns {GdprManager}
 	 */
-	enableForStorage(type: GdprStorage): GdprManager {
+	enableForStorage(type: GdprStorage): GdprGuard {
 		return this.forEachGroup(group => group.enableForStorage(type));
 	}
 
@@ -222,9 +217,8 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	 * @inheritDoc
 	 * @override
 	 * @memberof GdprManager
-	 * @returns {GdprManager}
 	 */
-	disableForStorage(type: GdprStorage): GdprManager {
+	disableForStorage(type: GdprStorage): GdprGuard {
 		return this.forEachGroup(group => group.disableForStorage(type));
 	}
 
@@ -232,9 +226,8 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	 * @inheritDoc
 	 * @override
 	 * @memberof GdprManager
-	 * @returns {GdprManager}
 	 */
-	toggleForStorage(type: GdprStorage): GdprManager {
+	toggleForStorage(type: GdprStorage): GdprGuard {
 		return this.forEachGroup(group => group.toggleForStorage(type));
 	}
 
@@ -249,6 +242,12 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 			bannerWasShown: this.bannerWasShown,
 			enabled: this.enabled,
 			groups: [],
+
+			// Useless, but for typechecking:
+			name: this.name,
+			description: this.description,
+			storage: this.storage,
+			required: this.required,
 		};
 
 		ret.groups = [...this.groups.values()].map(group => group.raw());

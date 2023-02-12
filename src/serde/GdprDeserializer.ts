@@ -1,9 +1,7 @@
-import { GdprManager } from "../GdprManager"
+import { GdprManager, GdprManagerRaw } from "../GdprManager"
 import { GdprStorage } from "../GdprStorage"
-import { GdprGuardGroup } from "../GdprGuardGroup"
+import { GdprGuardGroup, GdprGuardGroupRaw } from "../GdprGuardGroup"
 import { GdprGuard, GdprGuardRaw, makeGuard } from "../GdprGuard"
-import { GdprManagerRaw } from "../../dist/GdprManager";
-import { GdprGuardGroupRaw } from "../../dist/GdprGuardGroup";
 
 /*
 	For retro-compatibility, we do not check for
@@ -50,7 +48,7 @@ const isGuard = (raw: any): raw is GdprGuardRaw => {
  * @class GdprDeserializer
  * @export
  */
-abstract class GdprDeserializer {
+export abstract class GdprDeserializer {
 	/**
 	 * Deserialize a GdprManager from its raw representation
 	 * @param raw The serialized manager
@@ -70,9 +68,6 @@ abstract class GdprDeserializer {
 		manager.enabled = !!raw.enabled;
 		manager.bannerWasShown = !!raw.bannerWasShown;
 
-		if (!groups.length)
-			return null;
-
 		groups.forEach(group => manager.addGroup(group));
 		return manager;
 	}
@@ -84,12 +79,12 @@ abstract class GdprDeserializer {
 	 * @static
 	 * @memberof GdprDeserializer
 	 */
-	static group(raw: any): GdprGuardGroup | null {
+	static group(raw: GdprGuardGroupRaw|any): GdprGuardGroup | null {
 		const guard: GdprGuard | null = this.guard(raw);
 		if (guard === null)
 			return null;
 
-		if (!isGroup(guard))
+		if (!isGroup(raw))
 			return null;
 
 		const group = GdprGuardGroup.for(
@@ -102,10 +97,10 @@ abstract class GdprDeserializer {
 
 		const guards: GdprGuard[] = raw.guards
 			.map((guard: GdprGuardRaw) => groupKeys.every(key => key in guard) ? this.group(guard) : this.guard(guard))
-			.filter((guard: GdprGuardRaw|null) => guard !== null) as GdprGuard[];
+			.filter((guard: GdprGuard|null): guard is GdprGuard => guard !== null);
 
-		if (!guards.length)
-			return null;
+		// if (!guards.length)
+		// 	return null;
 
 		guards.forEach(guard => group.addGuard(guard));
 		return group;
@@ -118,7 +113,7 @@ abstract class GdprDeserializer {
 	 * @static
 	 * @memberof GdprDeserializer
 	 */
-	static guard(raw: any): GdprGuard | null {
+	static guard(raw: GdprGuardRaw|any): GdprGuard | null {
 		return !isGuard(raw) ? null : makeGuard(
 			raw.name,
 			raw.description,
@@ -127,8 +122,4 @@ abstract class GdprDeserializer {
 			!!raw.enabled
 		);
 	}
-}
-
-export {
-	GdprDeserializer,
 }

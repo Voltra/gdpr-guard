@@ -208,7 +208,7 @@ export class GdprGuardGroup implements GdprGuardCollection, GdprRawInto<GdprGuar
 			guards: [],
 		};
 
-		ret.guards = [...this.bindings].map(([_, guard]) => guard.raw() as GdprGuardRaw);
+		ret.guards = [...this.bindings].map(([_, guard]) => guard.raw());
 
 		return ret;
 	}

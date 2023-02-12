@@ -25,7 +25,7 @@ export interface GdprVisitor {
 	 * Callback called on each item
 	 * @param guard The guard currently being visited
 	 */
-	onEach(guard: GdprGuard): void;
+	onEach(guard: GdprGuard|GdprManager): void;
 }
 
 /**
@@ -33,7 +33,7 @@ export interface GdprVisitor {
  * @param guard The root of the GDPR structure to visit
  * @param {Partial<GdprVisitor>} visitor
  */
-export const visitGdpr = (guard: GdprGuard, {
+export const visitGdpr = (guard: GdprGuard|GdprManager, {
 	onManager = () => {},
 	onGroup = () => {},
 	onGuard = () => {},

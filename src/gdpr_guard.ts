@@ -5,6 +5,7 @@ export * from "./GdprStorage"
 export * from "./GdprManagerEventHub"
 export * from "./visitor"
 export * from "./builders/builders"
+export * from "./serde/GdprSerializer"
 export * from "./serde/GdprDeserializer"
 export * from "./serde/GdprSavior"
 
