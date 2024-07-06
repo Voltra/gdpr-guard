@@ -19,7 +19,7 @@ There are a handful of libraries to help you along the way:
 * [vue-gdpr-guard](https://www.npmjs.com/package/vue-gdpr-guard) A Vue 2 plugin that exposes global helpers as well as renderless components to help you build your UI easily (and optionally recursively)
 * [vue3-gdpr-guard](https://www.npmjs.com/package/vue3-gdpr-guard) ***WIP*** A Vue 3 plugin that aims to be a Vue 3 alternative to vue-gdpr-guard, but based on the Composition API instead
 * [react-gdpr-guard](https://www.npmjs.com/package/react-gdpr-guard) A React library that provides a hooks-creating function to interact with your GdprManager, in a react-way
-* [angular-gdpr-guard](https://www.npmjs.com/package/ngx-gdpr-guard) An Angular library that exposes a module and service to interact with your GdprManager, in an Angular and RXjs way
+* [ngx-gdpr-guard](https://www.npmjs.com/package/ngx-gdpr-guard) An Angular library that exposes a module and service to interact with your GdprManager, in an Angular and RXjs way
 * [svelte-gdpr-guard](#) ***Coming Soon***
 * [rx-gdpr-guard](#) ***Coming Soon***
 
@@ -296,6 +296,30 @@ interface GdprVisitor {
 }
 
 declare function visitGdpr(guard: GdprGuard, visitor?: Partial<GdprVisitor>);
+```
+
+## Decorator API
+
+This API allows you to [decorate](https://en.wikipedia.org/wiki/Decorator_pattern) the manager instance that is created or restored when using the Savior API.
+
+As such the Savior API has been extended/augmented with the following:
+
+```typescript
+type GdprManagerDecorator = (manager: GdprManager) => GdprManager;
+
+interface GdprSavior {
+	decorate?: GdprManagerDecorator;
+}
+
+abstract class GdprSaviorAdapter implements GdprSavior {
+	constructor(protected decorator: GdprManagerDecorator|undefined = undefined) {}
+
+	public abstract restore(shouldUpdate?: boolean): Promise<GdprManager | null>;
+
+	public abstract store(manager: GdprManagerRaw): Promise<boolean>;
+
+	public abstract updateSharedManager(manager: GdprManager): Promise<void>;
+};
 ```
 
 ## Helpline
