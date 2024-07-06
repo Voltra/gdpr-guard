@@ -3,7 +3,7 @@
  * @enum {number}
  * @export
  */
-enum GdprStorage {
+export enum GdprStorage {
 	/**
 	 * No storage
 	 */
@@ -32,12 +32,12 @@ enum GdprStorage {
 	/**
 	 * Storage on client-side filesystem
 	 */
-	FileSystem = 0b10000,
+	FileSystem = 0b100000,
 
 	/**
 	 * Storage on server (session, DB, cloud, etc...)
 	 */
-	ServerStorage = 0b10000,
+	ServerStorage = 0b1000000,
 
 	/**
 	 * All storage
@@ -45,6 +45,3 @@ enum GdprStorage {
 	All = Cookie | LocalStorage | SessionStorage | IndexedDb | FileSystem | ServerStorage,
 }
 
-export {
-	GdprStorage,
-}

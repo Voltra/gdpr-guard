@@ -158,7 +158,7 @@ export function makeGuard(name: string, description: string, storage: GdprStorag
 			return this;
 		},
 		toggleForStorage(type) {
-			if (this.storage == type && !this.required)
+			if (!this.required && (this.storage & type))
 				this.toggle();
 			return this;
 		},

@@ -18,9 +18,10 @@ There are a handful of libraries to help you along the way:
 * [dom-gdpr-guard](https://www.npmjs.com/package/dom-gdpr-guard) Use the JS DOM API to create elements based on the GdprManager's state and render it (can also use smart diffing)
 * [vue-gdpr-guard](https://www.npmjs.com/package/vue-gdpr-guard) A Vue 2 plugin that exposes global helpers as well as renderless components to help you build your UI easily (and optionally recursively)
 * [vue3-gdpr-guard](https://www.npmjs.com/package/vue3-gdpr-guard) ***WIP*** A Vue 3 plugin that aims to be a Vue 3 alternative to vue-gdpr-guard, but based on the Composition API instead
-* [react-gdpr-guard](https://www.npmjs.com/package/react-gdpr-guard) ***WIP*** A React library that provides a hooks-creating function to interact with your GdprManager, in a react-way
-* [angular-gdpr-guard](#) ***Coming Soon***
+* [react-gdpr-guard](https://www.npmjs.com/package/react-gdpr-guard) A React library that provides a hooks-creating function to interact with your GdprManager, in a react-way
+* [angular-gdpr-guard](https://www.npmjs.com/package/ngx-gdpr-guard) An Angular library that exposes a module and service to interact with your GdprManager, in an Angular and RXjs way
 * [svelte-gdpr-guard](#) ***Coming Soon***
+* [rx-gdpr-guard](#) ***Coming Soon***
 
 ## Persistence
 
