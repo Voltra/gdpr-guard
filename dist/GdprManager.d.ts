@@ -169,3 +169,8 @@ export declare class GdprManager implements GdprGuardCollection, GdprRawInto<Gdp
     protected forEachGroup(cb: (group: GdprGuardGroup) => any): GdprManager;
     getGroups(): GdprGuardGroup[];
 }
+/**
+ * A function used to decorate a {@link GdprManager} instance
+ * @see https://en.wikipedia.org/wiki/Decorator_pattern
+ */
+export type GdprManagerDecorator = (manager: GdprManager) => GdprManager;

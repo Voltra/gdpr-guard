@@ -1,4 +1,4 @@
-import { GdprManager, GdprManagerRaw } from "../GdprManager";
+import { GdprManager, GdprManagerDecorator, GdprManagerRaw } from "../GdprManager";
 /**
  * Factory function for a GdprManager
  * @typedef GdprManagerFactory
@@ -46,8 +46,14 @@ export interface GdprSavior {
      * Check if there is an existing manager state (should rely on GdprSavior#exists)
      */
     check(): Promise<void>;
+    /**
+     * Decorator API: Decorate the restored/created manager and use it
+     */
+    decorate?: GdprManagerDecorator;
 }
 export declare abstract class GdprSaviorAdapter implements GdprSavior {
+    protected decorator: GdprManagerDecorator | undefined;
+    constructor(decorator?: GdprManagerDecorator | undefined);
     /**
      * @inheritDoc
      * @override
@@ -83,4 +89,9 @@ export declare abstract class GdprSaviorAdapter implements GdprSavior {
      * @override
      */
     check(): Promise<void>;
+    /**
+     * @inheritDoc
+     * @override
+     */
+    decorate(manager: GdprManager): GdprManager;
 }
