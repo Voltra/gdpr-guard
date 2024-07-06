@@ -116,7 +116,7 @@ export abstract class GdprSaviorAdapter implements GdprSavior {
 		if (!restored) {
 			const generated = await factory();
 			const manager = this.decorate(generated);
-			this.updateSharedManager(manager);
+			await this.updateSharedManager(manager);
 
 			if (manager.bannerWasShown) {
 				manager.closeBanner();
