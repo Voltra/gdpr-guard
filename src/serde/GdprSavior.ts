@@ -1,4 +1,5 @@
-import { GdprManager, GdprManagerRaw } from "../GdprManager";
+import { GdprManager, GdprManagerDecorator, GdprManagerRaw } from "../GdprManager";
+import { exists } from "node:fs";
 
 /**
  * Factory function for a GdprManager
@@ -54,9 +55,16 @@ export interface GdprSavior {
 	 * Check if there is an existing manager state (should rely on GdprSavior#exists)
 	 */
 	check(): Promise<void>;
+
+	/**
+	 * Decorator API: Decorate the restored/created manager and use it
+	 */
+	decorate?: GdprManagerDecorator;
 }
 
 export abstract class GdprSaviorAdapter implements GdprSavior {
+	constructor(protected decorator: GdprManagerDecorator|undefined = undefined) {}
+
 	/**
 	 * @inheritDoc
 	 * @override
@@ -107,20 +115,22 @@ export abstract class GdprSaviorAdapter implements GdprSavior {
 
 		if (!restored) {
 			const generated = await factory();
-			this.updateSharedManager(generated);
+			const manager = this.decorate(generated);
+			this.updateSharedManager(manager);
 
-			if (generated.bannerWasShown) {
-				generated.closeBanner();
+			if (manager.bannerWasShown) {
+				manager.closeBanner();
 			}
 
-			return generated;
+			return manager;
 		}
 
-		if (restored.bannerWasShown) {
-			restored.closeBanner();
+		const manager = this.decorate(restored);
+		if (manager.bannerWasShown) {
+			manager.closeBanner();
 		}
 
-		return restored;
+		return manager;
 	}
 
 
@@ -132,5 +142,13 @@ export abstract class GdprSaviorAdapter implements GdprSavior {
 		await Promise.resolve();
 
 		await this.exists(true);
+	}
+
+	/**
+	 * @inheritDoc
+	 * @override
+	 */
+	public decorate(manager: GdprManager): GdprManager {
+		return this.decorator ? this.decorator(manager) : manager;
 	}
 }

@@ -287,3 +287,9 @@ export class GdprManager implements GdprGuardCollection, GdprRawInto<GdprManager
 	}
 }
 
+/**
+ * A function used to decorate a {@link GdprManager} instance
+ * @see https://en.wikipedia.org/wiki/Decorator_pattern
+ */
+export type GdprManagerDecorator = (manager: GdprManager) => GdprManager;
+
